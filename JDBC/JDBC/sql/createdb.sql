@@ -3,5 +3,3 @@ create table customer (
 	name varchar2(50),
 	surname varchar2(50)
 );
-
-create sequence customerSeq;
