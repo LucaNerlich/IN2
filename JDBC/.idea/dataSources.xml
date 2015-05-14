@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="1652044712">
+    <data-source source="LOCAL" name="Oracle - inf14.informatik.haw-hamburg.de@ora14.informatik.haw-hamburg.de" uuid="a2bd43b8-551b-4a64-bb70-2028444bfff0">
+      <driver-ref>oracle</driver-ref>
+      <auto-commit>false</auto-commit>
+      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
+      <jdbc-url>jdbc:oracle:thin:@//ora14.informatik.haw-hamburg.de:1521/inf14.informatik.haw-hamburg.de</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
+</project>

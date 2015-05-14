@@ -1,0 +1,25 @@
+INDEX VERSION 1.126+C:\Daten\HAW\Vorlesungen\IN2\eclipse\workspaces\00_JDBC\JDBC\.metadata\.plugins\org.eclipse.jdt.core
+3000053649.index
+4251467834.index
+1916180358.index
+3433886852.index
+3730526690.index
+4276575249.index
+3446837170.index
+3277441100.index
+3798230609.index
+2252117516.index
+3917566047.index
+2877109961.index
+1278370477.index
+1789169078.index
+868412254.index
+614060804.index
+361289800.index
+2594609853.index
+4089131402.index
+2859814426.index
+415139806.index
+3585733931.index
+3077948353.index
+3270002986.index
