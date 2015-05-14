@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="ojdbc7">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/JDBC/Libs/bin/oracle/ojdbc7.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

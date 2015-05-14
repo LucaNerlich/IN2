@@ -33,5 +33,6 @@
       </library>
     </orderEntry>
     <orderEntry type="inheritedJdk" />
+    <orderEntry type="library" name="ojdbc7" level="project" />
   </component>
 </module>

@@ -23,5 +23,6 @@
     <orderEntry type="library" name="slf4j" level="project" />
     <orderEntry type="library" name="hibernate1" level="project" />
     <orderEntry type="library" name="slf4j1" level="project" />
+    <orderEntry type="library" name="ojdbc7" level="project" />
   </component>
 </module>

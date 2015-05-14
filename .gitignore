@@ -3,3 +3,5 @@
 .idea/dataSources.xml
 .idea/sqldialects.xml
 .idea/workspace.xml
+.idea/libraries/ojdbc7.xml
+.idea/misc.xml
