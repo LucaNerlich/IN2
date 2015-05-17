@@ -40,10 +40,10 @@ public class JDBCTest {
     private static final String DB_PASSWORD = getPassword();
     // Ende
 
-    private static final String SURNAME_1 = Messages.getString("INP2.4"); //$NON-NLS-1$
-    private static final String NAME_1 = Messages.getString("INP2.3"); //$NON-NLS-1$
-    private static final String SURNAME_2 = Messages.getString("INP2.6"); //$NON-NLS-1$
-    private static final String NAME_2 = Messages.getString("INP2.5"); //$NON-NLS-1$
+    private static final String SURNAME_1 = Messages.getString("INP2.3"); //$NON-NLS-1$
+    private static final String NAME_1 = Messages.getString("INP2.4"); //$NON-NLS-1$
+    private static final String SURNAME_2 = Messages.getString("INP2.5"); //$NON-NLS-1$
+    private static final String NAME_2 = Messages.getString("INP2.6"); //$NON-NLS-1$
 
     private static TransactionManager transactionManager;
     private static CustomerDAO customerDAO;

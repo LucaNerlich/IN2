@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.*;
 
 import static org.junit.Assert.*;
 
@@ -29,10 +30,14 @@ import org.slf4j.LoggerFactory;
  */
 public class JPAXMLTest {
 
-	// Die folgenden drei Konstanten müssen jeweils angepasst werden:
+	// Die folgenden drei Konstanten mï¿½ssen jeweils angepasst werden:
 	private static final String DB_URL = Messages.getString("INP2.0"); //$NON-NLS-1$
-	private static final String DB_USER = Messages.getString("INP2.1"); //$NON-NLS-1$
-	private static final String DB_PASSWORD = Messages.getString("INP2.2"); //$NON-NLS-1$
+    //private static final String DB_USER = Messages.getString("INP2.1"); //$NON-NLS-1$
+    private static final String DB_USER = getUsername();
+    //		Description	Resource	Path	Location	Type
+    //Verdeckte Eingabemoeglichkeit schaffen!
+    //private static final String DB_PASSWORD = Messages.getString("INP2.2"); //$NON-NLS-1$
+    private static final String DB_PASSWORD = getPassword();
 	// Ende
 
 	private static final Logger LOG = LoggerFactory.getLogger(JPAXMLTest.class);
@@ -201,5 +206,24 @@ public class JPAXMLTest {
 		return ((BigDecimal) result).longValue();
 	}
 
+    private static String getUsername() {
+    /* Benutzername abfragen */
+        String user = javax.swing.JOptionPane
+                .showInputDialog("Enter Username");
 
+        return user;
+    }
+
+    private static String getPassword() {
+    /* Passwort abfragen */
+
+        JPasswordField passwordField = new JPasswordField(10);
+        passwordField.setEchoChar('*');
+        JOptionPane.showMessageDialog(null, passwordField,
+                "Enter password", JOptionPane.OK_OPTION);
+        char[] pw = passwordField.getPassword();
+        String password = String.valueOf(pw);
+
+        return password;
+    }
 }
