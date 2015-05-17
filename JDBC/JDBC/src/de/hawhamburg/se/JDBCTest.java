@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import javax.swing.*;
 import java.math.BigDecimal;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,18 +40,16 @@ public class JDBCTest {
     private static final String DB_PASSWORD = getPassword();
     // Ende
 
-    private static final String SURNAME_1 = Messages.getString("INP2.3"); //$NON-NLS-1$
-    private static final String NAME_1 = Messages.getString("INP2.4"); //$NON-NLS-1$
-    private static final String SURNAME_2 = Messages.getString("INP2.5"); //$NON-NLS-1$
-    private static final String NAME_2 = Messages.getString("INP2.6"); //$NON-NLS-1$
+    private static final String SURNAME_1 = Messages.getString("INP2.4"); //$NON-NLS-1$
+    private static final String NAME_1 = Messages.getString("INP2.3"); //$NON-NLS-1$
+    private static final String SURNAME_2 = Messages.getString("INP2.6"); //$NON-NLS-1$
+    private static final String NAME_2 = Messages.getString("INP2.5"); //$NON-NLS-1$
 
     private static TransactionManager transactionManager;
     private static CustomerDAO customerDAO;
 
     @BeforeClass
     public static void setUpClass() throws SQLException {
-        System.out.println("TEST");
-
         transactionManager = new TransactionManager(DB_URL);
         transactionManager.connect(DB_USER, DB_PASSWORD);
         customerDAO = new CustomerDAOImpl(transactionManager);
@@ -211,14 +211,11 @@ public class JDBCTest {
     /* Passwort abfragen */
 
         JPasswordField passwordField = new JPasswordField(10);
-        passwordField.setEchoChar('#');
+        passwordField.setEchoChar('*');
         JOptionPane.showMessageDialog(null, passwordField,
                 "Enter password", JOptionPane.OK_OPTION);
         char[] pw = passwordField.getPassword();
         String password = String.valueOf(pw);
-
-        System.out.println(DB_USER);
-        System.out.println(DB_PASSWORD);
 
         return password;
     }
