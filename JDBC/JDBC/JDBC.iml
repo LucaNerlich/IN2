@@ -17,7 +17,6 @@
     <orderEntry type="library" name="oracle" level="project" />
     <orderEntry type="library" name="slf4j" level="project" />
     <orderEntry type="library" name="hibernate4" level="project" />
-    <orderEntry type="library" name="hibernate1" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

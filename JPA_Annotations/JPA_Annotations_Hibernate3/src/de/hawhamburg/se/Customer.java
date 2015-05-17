@@ -1,6 +1,10 @@
 package de.hawhamburg.se;
 
-//Todo: Annotationen ergänzen!
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Customer {
 
 	private long id;
@@ -15,7 +19,7 @@ public class Customer {
 		this.name = name;
 		this.surname = surname;
 	}
-
+    @Id
 	public long getId() {
 		return id;
 	}
@@ -24,6 +28,7 @@ public class Customer {
 		this.id = id;
 	}
 
+    @Column(name="name",length=50)
 	public String getName() {
 		return name;
 	}
@@ -32,6 +37,7 @@ public class Customer {
 		this.name = name;
 	}
 
+    @Column(name="surname",length=50)
 	public String getSurname() {
 		return surname;
 	}
