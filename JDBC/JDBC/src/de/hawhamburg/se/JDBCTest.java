@@ -1,14 +1,15 @@
 package de.hawhamburg.se;
 
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import javax.swing.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -29,10 +30,12 @@ public class JDBCTest {
     private static final String DB_URL = Messages.getString("INP2.0"); //$NON-NLS-1$
     //		Description	Resource	Path	Location	Type
 //	Eingabemoeglichkeit schaffen!
-    private static final String DB_USER = Messages.getString("INP2.1"); //$NON-NLS-1$
+    //private static final String DB_USER = Messages.getString("INP2.1"); //$NON-NLS-1$
+    private static final String DB_USER = getUsername();
     //		Description	Resource	Path	Location	Type
     //Verdeckte Eingabemoeglichkeit schaffen!
-    private static final String DB_PASSWORD = Messages.getString("INP2.2"); //$NON-NLS-1$
+    //private static final String DB_PASSWORD = Messages.getString("INP2.2"); //$NON-NLS-1$
+    private static final String DB_PASSWORD = getPassword();
     // Ende
 
     private static final String SURNAME_1 = Messages.getString("INP2.3"); //$NON-NLS-1$
@@ -46,6 +49,7 @@ public class JDBCTest {
     @BeforeClass
     public static void setUpClass() throws SQLException {
         System.out.println("TEST");
+
         transactionManager = new TransactionManager(DB_URL);
         transactionManager.connect(DB_USER, DB_PASSWORD);
         customerDAO = new CustomerDAOImpl(transactionManager);
@@ -195,4 +199,27 @@ public class JDBCTest {
                                 parameters));
     }
 
+    private static String getUsername() {
+    /* Benutzername abfragen */
+        String user = javax.swing.JOptionPane
+                .showInputDialog("Enter Username");
+
+        return user;
+    }
+
+    private static String getPassword() {
+    /* Passwort abfragen */
+
+        JPasswordField passwordField = new JPasswordField(10);
+        passwordField.setEchoChar('#');
+        JOptionPane.showMessageDialog(null, passwordField,
+                "Enter password", JOptionPane.OK_OPTION);
+        char[] pw = passwordField.getPassword();
+        String password = String.valueOf(pw);
+
+        System.out.println(DB_USER);
+        System.out.println(DB_PASSWORD);
+
+        return password;
+    }
 }
