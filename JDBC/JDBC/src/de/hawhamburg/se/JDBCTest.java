@@ -45,6 +45,7 @@ public class JDBCTest {
 
     @BeforeClass
     public static void setUpClass() throws SQLException {
+        System.out.println("TEST");
         transactionManager = new TransactionManager(DB_URL);
         transactionManager.connect(DB_USER, DB_PASSWORD);
         customerDAO = new CustomerDAOImpl(transactionManager);
