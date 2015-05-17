@@ -1,6 +1,13 @@
 package de.hawhamburg.se;
 
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 //Todo: Add annotations!
+@Entity
 public class Address {
 
 	private long id;
@@ -13,6 +20,8 @@ public class Address {
 	public Address(final String street) {
 		this.street = street;
 	}
+
+    @Id
 	public long getId() {
 		return id;
 	}
@@ -20,6 +29,8 @@ public class Address {
 	public void setId(long id) {
 		this.id = id;
 	}
+
+    @Column(name="street",length=50)
 	public String getStreet() {
 		return street;
 	}
