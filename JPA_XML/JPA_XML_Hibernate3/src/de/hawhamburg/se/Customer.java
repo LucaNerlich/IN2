@@ -52,6 +52,4 @@ public class Customer {
         builder.append("]");
         return builder.toString();
     }
-
-
 }

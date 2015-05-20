@@ -134,6 +134,5 @@ public class JPARelationshipsTest {
 
         return password;
     }
-// Add good test cases!
 
 }

@@ -26,6 +26,7 @@ public class Customer {
     }
 
     @Id
+    @Column(name = "CUST_ID", unique = true, nullable = false)
     public long getId() {
         return id;
     }
