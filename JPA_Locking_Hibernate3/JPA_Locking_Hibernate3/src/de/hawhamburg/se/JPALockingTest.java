@@ -184,7 +184,14 @@ public class JPALockingTest {
 
     @Test
     public void testUpdate() {
+        createEntityManagers();
+        em1.getTransaction().begin();
+        em2.getTransaction().begin();
 
+        //em1 update
+        //em2 update -> opt lock exception
+        //em1 commit
+        //em2 commit -> rollback exception
     }
 
     public long getNextCustomerId() throws SQLException {
