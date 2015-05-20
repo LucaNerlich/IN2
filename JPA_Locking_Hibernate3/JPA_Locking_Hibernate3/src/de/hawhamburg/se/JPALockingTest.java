@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Vor dem Test muss die Datenbank mit dem Skript sql/createdb.sql erzeugt
  * worden sein.
@@ -135,14 +137,24 @@ public class JPALockingTest {
     @Test
     public void testInsert() {
         try {
-            insertCustomerInDB(Messages.getString("INP5.0"), Messages.getString("INP5.1"));
-            insertCustomerInDB(Messages.getString("INP5.2"), Messages.getString("INP5.3"));
+            createEntityManagers();
+
+            em1.getTransaction().begin();
+            final Customer customer = new Customer(Messages.getString("INP5.0"), Messages.getString("INP5.1"));
+            customer.setId(getNextCustomerId());
+
+            LOG.info("Customer ID before persist(): " + customer.getId());
+            em1.persist(customer);
+            LOG.info("Customer ID after persist(): " + customer.getId());
+            em1.getTransaction().commit();
 
             TransactionManager.ObjectBuilder objectBuilder = new CustomerObjectBuilder();
             List<Customer> ls = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
             ls.forEach(x -> System.out.println(x));
 
             transactionManager.commit();
+
+            assertTrue(isCustomerOnDB(customer.getId(), customer.getSurname(), customer.getName()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -150,20 +162,7 @@ public class JPALockingTest {
 
     @Test
     public void testUpdate() {
-        List<Object> ls = new ArrayList<>();
 
-        //surname, name, id, optlock
-
-        ls.add("Nerlich");
-        ls.add("Luca");
-        ls.add(1);
-
-        try {
-            transactionManager.executeSQLDeleteOrUpdate(Messages.getString("INP5.4"), ls);
-            transactionManager.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public long getNextCustomerId() throws SQLException {
@@ -175,18 +174,17 @@ public class JPALockingTest {
         return ((BigDecimal) result).longValue();
     }
 
-    private long insertCustomerInDB(final String surname, final String name)
-            throws SQLException {
-        final long id = getNextCustomerId();
+    private boolean isCustomerOnDB(final long id, final String surname,
+                                   final String name) throws SQLException {
         final List<Object> parameters = new ArrayList<Object>();
         parameters.add(new Long(id));
         parameters.add(surname);
         parameters.add(name);
-        transactionManager.executeSQLInsert(
-                "insert into CUSTOMER (ID, SURNAME, NAME) values (?, ?, ?)",
-                parameters);
-        transactionManager.commit();
-        return id;
+        return BigDecimal.ONE
+                .equals(transactionManager
+                        .executeSQLQuerySingleResult(
+                                "select count(*) from CUSTOMER where ID = ? and SURNAME = ? and NAME = ?",
+                                parameters));
     }
 
     private static String getUsername() {
@@ -209,4 +207,20 @@ public class JPALockingTest {
 
         return password;
     }
+
+      /*
+    private long insertCustomerInDB(final String surname, final String name)
+            throws SQLException {
+        final long id = getNextCustomerId();
+        final List<Object> parameters = new ArrayList<Object>();
+        parameters.add(new Long(id));
+        parameters.add(surname);
+        parameters.add(name);
+        transactionManager.executeSQLInsert(
+                "insert into CUSTOMER (ID, SURNAME, NAME) values (?, ?, ?)",
+                parameters);
+        transactionManager.commit();
+        return id;
+    }
+    */
 }
