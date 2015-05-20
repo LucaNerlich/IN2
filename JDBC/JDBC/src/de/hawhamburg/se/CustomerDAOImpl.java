@@ -32,11 +32,10 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public long getNextCustomerId() throws SQLException {
-        long custId = Long.parseLong(transactionManager.executeSQLQuerySingleResult(
+
+        return Long.parseLong(transactionManager.executeSQLQuerySingleResult(
                 "Select Customerseq.NEXTVAL From DUAL",
                 TransactionManager.EMPTY_PARAMETERS).toString());
-
-        return custId;
     }
 
     @Override
@@ -61,9 +60,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
         TransactionManager.ObjectBuilder objectBuilder = new CustomerObjectBuilder();
 
-        List<Customer> ls = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
-
-        return ls;
+        return transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
     }
 
     @Override
