@@ -189,10 +189,9 @@ public class JPALockingTest {
 
     private static String getUsername() {
     /* Benutzername abfragen */
-        String user = javax.swing.JOptionPane
-                .showInputDialog("Enter Username");
 
-        return user;
+        return JOptionPane
+                .showInputDialog("Enter Username");
     }
 
     private static String getPassword() {
@@ -203,9 +202,8 @@ public class JPALockingTest {
         JOptionPane.showMessageDialog(null, passwordField,
                 "Enter password", JOptionPane.OK_OPTION);
         char[] pw = passwordField.getPassword();
-        String password = String.valueOf(pw);
 
-        return password;
+        return String.valueOf(pw);
     }
 
       /*
