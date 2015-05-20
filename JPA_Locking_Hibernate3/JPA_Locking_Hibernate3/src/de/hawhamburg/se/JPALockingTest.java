@@ -138,6 +138,9 @@ public class JPALockingTest {
     public void testInsert() {
         try {
             createEntityManagers();
+            TransactionManager.ObjectBuilder objectBuilder = new CustomerObjectBuilder();
+
+            // CUSTOMER 1:
 
             em1.getTransaction().begin();
             final Customer customer = new Customer(Messages.getString("INP5.0"), Messages.getString("INP5.1"));
@@ -148,13 +151,32 @@ public class JPALockingTest {
             LOG.info("Customer ID after persist(): " + customer.getId());
             em1.getTransaction().commit();
 
-            TransactionManager.ObjectBuilder objectBuilder = new CustomerObjectBuilder();
             List<Customer> ls = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
             ls.forEach(x -> System.out.println(x));
 
             transactionManager.commit();
 
             assertTrue(isCustomerOnDB(customer.getId(), customer.getSurname(), customer.getName()));
+
+            // CUSTOMER 2:
+
+            em2.getTransaction().begin();
+            final Customer customer2 = new Customer(Messages.getString("INP5.2"), Messages.getString("INP5.3"));
+            customer2.setId(getNextCustomerId());
+
+            LOG.info("Customer2 ID before persist(): " + customer2.getId());
+            em2.persist(customer2);
+            LOG.info("Customer2 ID after persist(): " + customer2.getId());
+            em2.getTransaction().commit();
+
+            List<Customer> ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
+            ls2.forEach(x -> System.out.println(x));
+
+            transactionManager.commit();
+
+            assertTrue(isCustomerOnDB(customer2.getId(), customer2.getSurname(), customer2.getName()));
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
