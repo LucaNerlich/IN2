@@ -63,7 +63,7 @@ public class Customer {
         this.homeAddress = address;
     }
 
-    @OneToMany(cascade = ALL, mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     public Set<CreditCard> getCreditCards() {
         if (creditCards == null) {
             creditCards = new HashSet<CreditCard>();
@@ -75,7 +75,7 @@ public class Customer {
         this.creditCards = creditCards;
     }
 
-    @OneToMany(cascade=ALL, mappedBy="customer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="customer")
     public Set<Bank> getBanks() {
         if (banks == null) {
             banks = new HashSet<Bank>();
