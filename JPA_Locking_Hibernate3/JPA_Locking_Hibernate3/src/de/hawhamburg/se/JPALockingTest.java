@@ -198,6 +198,9 @@ public class JPALockingTest {
         ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
         ls2.forEach(x -> System.out.println(x));
 
+        final List<Customer> customers = em.createQuery("from Customer",
+				Customer.class).getResultList();
+
             Query query = em1.createQuery("Select c From Customer c");
             List<Customer> list = query.getResultList();
 
