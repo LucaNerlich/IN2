@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -141,7 +142,6 @@ public class JPALockingTest {
             TransactionManager.ObjectBuilder objectBuilder = new CustomerObjectBuilder();
 
             // CUSTOMER 1:
-
             em1.getTransaction().begin();
             final Customer customer = new Customer(Messages.getString("INP5.0"), Messages.getString("INP5.1"));
             customer.setId(getNextCustomerId());
@@ -153,13 +153,13 @@ public class JPALockingTest {
 
             List<Customer> ls = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
             ls.forEach(x -> System.out.println(x));
+            System.out.println("list SIZE: " + ls.size());
 
             transactionManager.commit();
 
             assertTrue(isCustomerOnDB(customer.getId(), customer.getSurname(), customer.getName()));
 
             // CUSTOMER 2:
-
             em2.getTransaction().begin();
             final Customer customer2 = new Customer(Messages.getString("INP5.2"), Messages.getString("INP5.3"));
             customer2.setId(getNextCustomerId());
@@ -171,27 +171,70 @@ public class JPALockingTest {
 
             List<Customer> ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
             ls2.forEach(x -> System.out.println(x));
+            System.out.println("list SIZE: " + ls2.size());
 
             transactionManager.commit();
 
             assertTrue(isCustomerOnDB(customer2.getId(), customer2.getSurname(), customer2.getName()));
-
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    @Test
-    public void testUpdate() {
+
+    //TODO Loescht alle DB Inhalte bei leerer Methode...??
+
+    public void testUpdate() throws SQLException {
+
+        /*
         createEntityManagers();
+        TransactionManager.ObjectBuilder objectBuilder = new CustomerObjectBuilder();
+
         em1.getTransaction().begin();
         em2.getTransaction().begin();
 
+        List<Customer> ls2 = null;
+        ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
+        ls2.forEach(x -> System.out.println(x));
+
+            Query query = em1.createQuery("Select c From Customer c");
+            List<Customer> list = query.getResultList();
+
+        ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
+        ls2.forEach(x -> System.out.println(x));
+
+            list.forEach(x -> System.out.println(x));
+            System.out.println("list SIZE: " + list.size());
+
+        //todo get list of ids?
+
+        // x = em.find(x, id)
+        // change x
+        // em.merge x
+
+        //x.class, id
+
+
+        //liste ist null
+        Customer customer = em1.find(Customer.class, list.get(0).getId());
+        customer.setSurname("Nerlich");
+        em1.merge(customer);
+        em1.getTransaction().commit();
+        em2.getTransaction().commit();
+
+        try {
+            ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
+            ls2.forEach(x -> System.out.println(x));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         //em1 update
         //em2 update -> opt lock exception
         //em1 commit
         //em2 commit -> rollback exception
+
+        */
     }
 
     public long getNextCustomerId() throws SQLException {
