@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.*;
 
+import static javax.swing.JOptionPane.OK_OPTION;
 import static org.junit.Assert.*;
 
 import org.junit.After;
@@ -122,7 +123,7 @@ public class JPAAnnotationsTest {
 		final long id = insertCustomerInDB(SURNAME_1, NAME_1);
 		createEntityManager();
 		em.getTransaction().begin();
-		final Customer customer = em.find(Customer.class, new Long(id));
+		final Customer customer = em.find(Customer.class, id);
 		assertNotNull(customer);
 		assertEquals(id, customer.getId());
 		assertEquals(SURNAME_1, customer.getSurname());
@@ -149,7 +150,7 @@ public class JPAAnnotationsTest {
 		assertFalse(isCustomerOnDB(id, SURNAME_2, NAME_2));
 		createEntityManager();
 		em.getTransaction().begin();
-		final Customer customer = em.find(Customer.class, new Long(id));
+		final Customer customer = em.find(Customer.class, id);
 		customer.setName(NAME_2);
 		customer.setSurname(SURNAME_2);
 		em.persist(customer);
@@ -166,7 +167,7 @@ public class JPAAnnotationsTest {
 		assertTrue(isCustomerOnDB(id, SURNAME_1, NAME_1));
 		createEntityManager();
 		em.getTransaction().begin();
-		final Customer customer = em.find(Customer.class, new Long(id));
+		final Customer customer = em.find(Customer.class, id);
 		em.remove(customer);
 		em.getTransaction().commit();
 		assertFalse(isCustomerOnDB(id, SURNAME_1, NAME_1));
@@ -174,8 +175,8 @@ public class JPAAnnotationsTest {
 
 	private boolean isCustomerOnDB(final long id, final String surname,
 			final String name) throws SQLException {
-		final List<Object> parameters = new ArrayList<Object>();
-		parameters.add(new Long(id));
+		final List<Object> parameters = new ArrayList<>();
+		parameters.add(id);
 		parameters.add(surname);
 		parameters.add(name);
 		return BigDecimal.ONE
@@ -197,8 +198,8 @@ public class JPAAnnotationsTest {
 	private long insertCustomerInDB(final String surname, final String name)
 			throws SQLException {
 		final long id = getNextCustomerId();
-		final List<Object> parameters = new ArrayList<Object>();
-		parameters.add(new Long(id));
+		final List<Object> parameters = new ArrayList<>();
+		parameters.add(id);
 		parameters.add(surname);
 		parameters.add(name);
 		transactionManager.executeSQLInsert(
@@ -210,10 +211,9 @@ public class JPAAnnotationsTest {
 
     private static String getUsername() {
     /* Benutzername abfragen */
-        String user = javax.swing.JOptionPane
-                .showInputDialog("Enter Username");
 
-        return user;
+		return JOptionPane
+                .showInputDialog("Enter Username");
     }
 
     private static String getPassword() {
@@ -222,11 +222,9 @@ public class JPAAnnotationsTest {
         JPasswordField passwordField = new JPasswordField(10);
         passwordField.setEchoChar('*');
         JOptionPane.showMessageDialog(null, passwordField,
-                "Enter password", JOptionPane.OK_OPTION);
+                "Enter password", OK_OPTION);
         char[] pw = passwordField.getPassword();
-        String password = String.valueOf(pw);
 
-        return password;
+		return String.valueOf(pw);
     }
-
 }

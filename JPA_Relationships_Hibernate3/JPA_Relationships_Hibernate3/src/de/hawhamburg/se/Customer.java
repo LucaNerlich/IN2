@@ -83,6 +83,7 @@ public class Customer {
         return banks;
     }
 
+    //TODO NOrmale add und remove fuer banken
     public void setBanks(final Set<Bank> banks) {
         this.banks = banks;
     }

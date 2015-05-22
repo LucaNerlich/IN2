@@ -1,13 +1,11 @@
 package de.hawhamburg.se;
 
+import org.hibernate.StaleObjectStateException;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
 import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -151,8 +149,8 @@ public class JPALockingTest {
             LOG.info("Customer ID after persist(): " + customer.getId());
             em1.getTransaction().commit();
 
-            List<Customer> ls = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
-            ls.forEach(x -> System.out.println(x));
+            List ls = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
+            ls.forEach(System.out::println);
             System.out.println("list SIZE: " + ls.size());
 
             transactionManager.commit();
@@ -169,8 +167,8 @@ public class JPALockingTest {
             LOG.info("Customer2 ID after persist(): " + customer2.getId());
             em2.getTransaction().commit();
 
-            List<Customer> ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
-            ls2.forEach(x -> System.out.println(x));
+            List ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
+            ls2.forEach(System.out::println);
             System.out.println("list SIZE: " + ls2.size());
 
             transactionManager.commit();
@@ -182,62 +180,74 @@ public class JPALockingTest {
         }
     }
 
-
-    //TODO Loescht alle DB Inhalte bei leerer Methode...??
-
-    public void testUpdate() throws SQLException {
-
-        /*
-        createEntityManagers();
-        TransactionManager.ObjectBuilder objectBuilder = new CustomerObjectBuilder();
-
-        em1.getTransaction().begin();
-        em2.getTransaction().begin();
-
-        List<Customer> ls2 = null;
-        ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
-        ls2.forEach(x -> System.out.println(x));
-
-        final List<Customer> customers = em.createQuery("from Customer",
-				Customer.class).getResultList();
-
-            Query query = em1.createQuery("Select c From Customer c");
-            List<Customer> list = query.getResultList();
-
-        ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
-        ls2.forEach(x -> System.out.println(x));
-
-            list.forEach(x -> System.out.println(x));
-            System.out.println("list SIZE: " + list.size());
-
-        //todo get list of ids?
-
-        // x = em.find(x, id)
-        // change x
-        // em.merge x
-
-        //x.class, id
-
-
-        //liste ist null
-        Customer customer = em1.find(Customer.class, list.get(0).getId());
-        customer.setSurname("Nerlich");
-        em1.merge(customer);
-        em1.getTransaction().commit();
-        em2.getTransaction().commit();
-
+    public void insertInDB() {
         try {
-            ls2 = transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
-            ls2.forEach(x -> System.out.println(x));
+            createEntityManagers();
+            final Customer konrad = new Customer(Messages.getString("INP5.0"), Messages.getString("INP5.1"));
+
+            konrad.setId(getNextCustomerId());
+            final Customer ada = new Customer(Messages.getString("INP5.2"), Messages.getString("INP5.3"));
+
+            ada.setId(getNextCustomerId());
+            em1.getTransaction().begin();
+            em1.persist(konrad);
+            em1.persist(ada);
+            em1.getTransaction().commit();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //em1 update
-        //em2 update -> opt lock exception
-        //em1 commit
-        //em2 commit -> rollback exception
+    }
 
-        */
+    @Test(expected = RollbackException.class)
+    public void testRollBack() throws SQLException {
+        //setup
+        insertInDB();
+        createEntityManagers();
+        em1.getTransaction().begin();
+        em2.getTransaction().begin();
+
+        List<Customer> customers = em1.createQuery("from Customer",
+                Customer.class).getResultList();
+
+        Customer customer = em1.find(Customer.class, customers.get(0).getId());
+        Customer customer2 = em2.find(Customer.class, customers.get(0).getId());
+
+        customer.setSurname("Nerlich");
+        em1.getTransaction().commit();
+
+        customer2.setSurname("Sommerlig");
+        em2.getTransaction().commit();
+    }
+
+    @Test(expected = OptimisticLockException.class)
+    public void testOptimisticLock() {
+            //setup
+            insertInDB();
+            createEntityManagers();
+            em1.getTransaction().begin();
+            em2.getTransaction().begin();
+
+            List<Customer> customers = em1.createQuery("from Customer",
+                    Customer.class).getResultList();
+
+            Customer customer = em1.find(Customer.class, customers.get(0).getId());
+
+            em1.lock(customer, LockModeType.OPTIMISTIC);
+
+            customer.setSurname("Nerlich");
+            Integer version1 = customer.getVersion();
+            customer.setVersion(version1++);
+
+            customer = em2.find(Customer.class, customers.get(0).getId());
+
+            em1.getTransaction().commit();
+
+            customer.setSurname("Sommerlig");
+            Integer version2 = customer.getVersion();
+            customer.setVersion(version2++);
+
+            em2.getTransaction().commit();
     }
 
     public long getNextCustomerId() throws SQLException {
@@ -252,7 +262,7 @@ public class JPALockingTest {
     private boolean isCustomerOnDB(final long id, final String surname,
                                    final String name) throws SQLException {
         final List<Object> parameters = new ArrayList<Object>();
-        parameters.add(new Long(id));
+        parameters.add(id);
         parameters.add(surname);
         parameters.add(name);
         return BigDecimal.ONE
@@ -264,7 +274,6 @@ public class JPALockingTest {
 
     private static String getUsername() {
     /* Benutzername abfragen */
-
         return JOptionPane
                 .showInputDialog("Enter Username");
     }
