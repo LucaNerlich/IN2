@@ -1,6 +1,5 @@
 package de.hawhamburg.se;
 
-import org.hibernate.StaleObjectStateException;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -220,8 +219,9 @@ public class JPALockingTest {
         em2.getTransaction().commit();
     }
 
-    @Test(expected = OptimisticLockException.class)
+    @Test
     public void testOptimisticLock() {
+        try {
             //setup
             insertInDB();
             createEntityManagers();
@@ -236,18 +236,26 @@ public class JPALockingTest {
             em1.lock(customer, LockModeType.OPTIMISTIC);
 
             customer.setSurname("Nerlich");
-            Integer version1 = customer.getVersion();
-            customer.setVersion(version1++);
+            // Integer version1 = customer.getVersion();
+            // customer.setVersion(version1++);
 
             customer = em2.find(Customer.class, customers.get(0).getId());
 
             em1.getTransaction().commit();
 
             customer.setSurname("Sommerlig");
-            Integer version2 = customer.getVersion();
-            customer.setVersion(version2++);
+            //  Integer version2 = customer.getVersion();
+            //  customer.setVersion(version2++);
 
             em2.getTransaction().commit();
+        } catch (RollbackException e) {
+            boolean exFound = false;
+            if (e.getCause() instanceof OptimisticLockException) {
+                exFound = true;
+                System.out.println("Optimistic Lock Exception Found");
+            }
+            assertTrue(exFound);
+        }
     }
 
     public long getNextCustomerId() throws SQLException {
