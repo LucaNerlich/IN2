@@ -53,8 +53,8 @@ public class Customer {
         this.surname = surname;
     }
 
-    @OneToOne(optional=false)
-    @JoinColumn(name="CUST_ID", unique=true, nullable=false, updatable=false)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ADDR_ID")
     public Address getHomeAddress() {
         return homeAddress;
     }
@@ -75,7 +75,13 @@ public class Customer {
         this.creditCards = creditCards;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="customer")
+    @ManyToMany
+    @JoinTable(name="bank_customer",
+            joinColumns=
+            @JoinColumn(name="CUST_ID", referencedColumnName="ID"),
+            inverseJoinColumns=
+            @JoinColumn(name="BANK_ID", referencedColumnName="ID")
+    )
     public Set<Bank> getBanks() {
         if (banks == null) {
             banks = new HashSet<Bank>();
@@ -83,7 +89,7 @@ public class Customer {
         return banks;
     }
 
-    //TODO NOrmale add und remove fuer banken
+    //TODO Normale add und remove fuer banken
     public void setBanks(final Set<Bank> banks) {
         this.banks = banks;
     }

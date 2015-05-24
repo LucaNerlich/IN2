@@ -4,6 +4,7 @@ package de.hawhamburg.se;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 //Todo: Add annotations!
@@ -22,6 +23,8 @@ public class Address {
 	}
 
     @Id
+	@Column(name = "ADDR_ID")
+	@GeneratedValue
 	public long getId() {
 		return id;
 	}

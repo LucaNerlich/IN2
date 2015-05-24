@@ -21,6 +21,7 @@ public class Bank {
     }
 
     @Id
+    @Column(name = "BANK_ID")
     public long getId() {
         return id;
     }
