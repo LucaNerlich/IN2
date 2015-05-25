@@ -297,20 +297,4 @@ public class JPALockingTest {
 
         return String.valueOf(pw);
     }
-
-      /*
-    private long insertCustomerInDB(final String surname, final String name)
-            throws SQLException {
-        final long id = getNextCustomerId();
-        final List<Object> parameters = new ArrayList<Object>();
-        parameters.add(new Long(id));
-        parameters.add(surname);
-        parameters.add(name);
-        transactionManager.executeSQLInsert(
-                "insert into CUSTOMER (ID, SURNAME, NAME) values (?, ?, ?)",
-                parameters);
-        transactionManager.commit();
-        return id;
-    }
-    */
 }
