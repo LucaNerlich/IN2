@@ -89,7 +89,23 @@ public class Customer {
         return banks;
     }
 
-    //TODO Normale add und remove fuer banken
+    public void addBank(String bankName){
+        Bank newBank = new Bank(bankName);
+        banks.add(newBank);
+    }
+
+    public void removeBank(Bank bank){
+        banks.remove(bank);
+    }
+
+    public void removeBankByString(String bankName){
+        for(Bank bank : banks){
+            if(bank.getName().equals(bankName)){
+                banks.remove(bank);
+            }
+        }
+    }
+
     public void setBanks(final Set<Bank> banks) {
         this.banks = banks;
     }
