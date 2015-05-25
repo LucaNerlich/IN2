@@ -1,15 +1,5 @@
-.idea/dataSources.ids
-.idea/dataSources.local.xml
-.idea/dataSources.xml
-.idea/sqldialects.xml
 .idea/workspace.xml
-.idea/libraries/ojdbc7.xml
-.idea/misc.xml
-.idea/vcs.xml
-.idea/libraries/oracle.xml
 JDBC/JDBC/JDBC.iml
 JDBC/Libs/Libs.iml
-.idea/
 out/
-*.iml
 JPA_Locking_Hibernate3/JPA_Locking_Hibernate3/err.out
