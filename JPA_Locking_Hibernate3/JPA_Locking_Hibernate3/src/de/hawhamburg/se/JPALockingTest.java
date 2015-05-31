@@ -97,7 +97,6 @@ public class JPALockingTest {
         }
     }
 
-    // Add Entitymanagers for concurrent modifications.
     private void createEntityManagers() {
         emf = Persistence.createEntityManagerFactory("haw_demo");
         emf2 = Persistence.createEntityManagerFactory("haw_demo");

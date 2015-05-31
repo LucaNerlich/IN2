@@ -1,21 +1,21 @@
 package de.hawhamburg.se;
 
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.junit.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.swing.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
-import org.junit.Assert;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Vor dem Test muss die Datenbank mit dem Skript sql/createdb.sql erzeugt
@@ -32,7 +32,6 @@ public class JPARelationshipsTest {
     private static final Logger LOG = LoggerFactory
             .getLogger(JPARelationshipsTest.class);
 
-    //Todo
     private static final String SURNAME_1 = Messages.getString("INP2.3"); // Furchtlos
     private static final String NAME_1 = Messages.getString("INP2.4"); // Felix
     private static final String SURNAME_2 = Messages.getString("INP2.5"); // Ratlos
@@ -51,19 +50,19 @@ public class JPARelationshipsTest {
     private EntityManagerFactory emf = null;
     private EntityManager em = null;
 
-    @org.junit.BeforeClass
+    @BeforeClass
     public static void setUpClass() throws SQLException {
         transactionManager = new TransactionManager(DB_URL);
         transactionManager.connect(DB_USER, DB_PASSWORD);
     }
 
-    @org.junit.AfterClass
+    @AfterClass
     public static void tearDownClass() {
         transactionManager.disconnect();
         transactionManager = null;
     }
 
-    @org.junit.Before
+    @Before
     public void setUp() throws SQLException {
         transactionManager.executeSQLDeleteOrUpdate(
                 "delete from BANK_CUSTOMER",
@@ -79,7 +78,7 @@ public class JPARelationshipsTest {
         transactionManager.commit();
     }
 
-    @org.junit.After
+    @After
     public void tearDown() throws SQLException {
         if (em != null) {
             try {
@@ -105,13 +104,152 @@ public class JPARelationshipsTest {
         emf = Persistence.createEntityManagerFactory("haw_demo");
         em = emf.createEntityManager();
     }
-//Todo: Do you see a good possibility to really test this?
 
-    @org.junit.Test
+    @Test
     public void testEntityManager() throws SQLException {
         createEntityManager();
         em.getTransaction().begin();
         em.getTransaction().commit();
+    }
+
+    @Test
+    public void testCreateAddress() throws SQLException {
+        createEntityManager();
+        em.getTransaction().begin();
+        final Address address = new Address(STREET_1);
+        LOG.info("Address ID before persist(): " + address.getId());
+        em.persist(address);
+        LOG.info("Address ID after persist(): " + address.getId());
+        em.getTransaction().commit();
+    }
+
+    @Test
+    public void testCustomerCreditCardBank() throws SQLException {
+        createEntityManager();
+        em.getTransaction().begin();
+        final Customer customer = new Customer(SURNAME_1, NAME_1);
+        final Address address = new Address(STREET_1);
+        final Bank bank = new Bank(BANK_1);
+        final CreditCard creditCard = new CreditCard(CREDITCARDNO_1);
+
+        creditCard.setHolder(customer);
+        customer.addCreditCard(creditCard);
+        customer.addBank(bank);
+
+        customer.setHomeAddress(address);
+        LOG.info("Customer ID before persist(): " + customer.getId());
+        em.persist(customer);
+        em.persist(address);
+        em.persist(creditCard);
+        em.persist(bank);
+        LOG.info("Customer ID after persist(): " + customer.getId());
+        em.getTransaction().commit();
+
+        assertTrue(isCustomerOnDB(customer.getId(), SURNAME_1, NAME_1));
+
+        Customer customerFromDB = em.find(Customer.class, customer.getId());
+
+        Set<CreditCard> creditcardsFromDB = customerFromDB.getCreditCards();
+        assertEquals(creditcardsFromDB.size(), 1);
+
+        Set<Bank> banksFromDB = customerFromDB.getBanks();
+        assertEquals("Banks in customer not saved", banksFromDB.size(),1);
+    }
+
+    @Test
+    public void testCreateBank() throws SQLException {
+        createEntityManager();
+        em.getTransaction().begin();
+        final Bank bank = new Bank(BANK_1);
+        LOG.info("Bank ID before persist(): " + bank.getId());
+        em.persist(bank);
+        LOG.info("Bank ID after persist(): " + bank.getId());
+        em.getTransaction().commit();
+
+        assertTrue(isBankOnDB(bank.getId(), BANK_1));
+    }
+
+    @Test
+    public void testCreateCreditCard() throws SQLException {
+        createEntityManager();
+        em.getTransaction().begin();
+        final CreditCard creditCard = new CreditCard(CREDITCARDNO_1);
+        final Customer customer = new Customer(SURNAME_1, NAME_1);
+        final Address address = new Address(STREET_1);
+        customer.setHomeAddress(address);
+        creditCard.setHolder(customer);
+
+        LOG.info("CreditCard ID before persist(): " + creditCard.getId());
+        em.persist(customer);
+        em.persist(address);
+        em.persist(creditCard);
+        LOG.info("CreditCard ID after persist(): " + creditCard.getId());
+        em.getTransaction().commit();
+
+        assertTrue(isCreditCardOnDB(creditCard.getId(), CREDITCARDNO_1));
+    }
+
+
+    public void testInserts() {
+        insertInDB();
+    }
+
+    public void insertInDB() {
+
+        final Customer rudi = new Customer(SURNAME_2, NAME_2);
+        final Address addressRudi = new Address(STREET_1);
+        final Bank bankHaspa = new Bank(BANK_1);
+        final Bank bankDB = new Bank(BANK_2);
+
+        createEntityManager();
+        em.getTransaction().begin();
+        // rudi.setId(getNextCustomerId());
+
+        rudi.setHomeAddress(addressRudi);
+
+        rudi.addBank(bankHaspa);
+        rudi.addBank(bankDB);
+
+        em.persist(rudi);
+        em.getTransaction().commit();
+
+    }
+
+
+    private boolean isCustomerOnDB(final long id, final String surname,
+                                   final String name) throws SQLException {
+        final List<Object> parameters = new ArrayList<Object>();
+        parameters.add(id);
+        parameters.add(surname);
+        parameters.add(name);
+        return BigDecimal.ONE
+                .equals(transactionManager
+                        .executeSQLQuerySingleResult(
+                                "select count(*) from CUSTOMER where ID = ? and SURNAME = ? and NAME = ?",
+                                parameters));
+    }
+
+    private boolean isBankOnDB(final long id, final String name)
+            throws SQLException {
+        final List<Object> parameters = new ArrayList<Object>();
+        parameters.add(new Long(id));
+        parameters.add(name);
+        return BigDecimal.ONE.equals(transactionManager
+                .executeSQLQuerySingleResult(
+                        "select count(*) from BANK where ID = ? and NAME = ?",
+                        parameters));
+    }
+
+    private boolean isCreditCardOnDB(final long id, final String number)
+            throws SQLException {
+        final List<Object> parameters = new ArrayList<Object>();
+        parameters.add(new Long(id));
+        parameters.add(number);
+        return BigDecimal.ONE
+                .equals(transactionManager
+                        .executeSQLQuerySingleResult(
+                                "select count(*) from CREDITCARD where ID = ? and CCNUMBER = ?",
+                                parameters));
     }
 
     private static String getUsername() {

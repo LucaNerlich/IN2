@@ -5,7 +5,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-//Todo: Add annotations!
 @Entity
 public class Customer {
 
@@ -23,10 +22,14 @@ public class Customer {
     public Customer(final String surname, final String name) {
         this.name = name;
         this.surname = surname;
+        banks = new HashSet<>();
+        creditCards = new HashSet<>();
+
     }
 
     @Id
-    @Column(name = "CUST_ID", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUSTOMERGEN")
+    @SequenceGenerator(name = "CUSTOMERGEN", sequenceName = "CUSTOMERSEQ")
     public long getId() {
         return id;
     }
@@ -54,7 +57,7 @@ public class Customer {
     }
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ADDR_ID")
+    @JoinColumn(name = "home_address_id", unique = true, nullable = false, updatable = false)
     public Address getHomeAddress() {
         return homeAddress;
     }
@@ -63,7 +66,7 @@ public class Customer {
         this.homeAddress = address;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "holder")
     public Set<CreditCard> getCreditCards() {
         if (creditCards == null) {
             creditCards = new HashSet<CreditCard>();
@@ -75,13 +78,16 @@ public class Customer {
         this.creditCards = creditCards;
     }
 
+    public void addCreditCard(CreditCard creditCard) {
+        if (creditCard != null) {
+            creditCards.add(creditCard);
+        }
+    }
+
     @ManyToMany
-    @JoinTable(name="bank_customer",
-            joinColumns=
-            @JoinColumn(name="CUST_ID", referencedColumnName="ID"),
-            inverseJoinColumns=
-            @JoinColumn(name="BANK_ID", referencedColumnName="ID")
-    )
+    @JoinTable(name = "BANK_CUSTOMER",
+            joinColumns = @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "BANK_ID", referencedColumnName = "ID"))
     public Set<Bank> getBanks() {
         if (banks == null) {
             banks = new HashSet<Bank>();
@@ -89,18 +95,31 @@ public class Customer {
         return banks;
     }
 
-    public void addBank(String bankName){
-        Bank newBank = new Bank(bankName);
-        banks.add(newBank);
+    public void addBankByString(String bankName) {
+        if (!bankName.equals("")) {
+            Bank newBank = new Bank(bankName);
+            banks.add(newBank);
+        } else {
+            System.err.println("bank add failed");
+        }
+
     }
 
-    public void removeBank(Bank bank){
+    public void addBank(Bank bank) {
+        if (bank != null) {
+            banks.add(bank);
+        } else {
+            System.err.println("Cannot add null to banks");
+        }
+    }
+
+    public void removeBank(Bank bank) {
         banks.remove(bank);
     }
 
-    public void removeBankByString(String bankName){
-        for(Bank bank : banks){
-            if(bank.getName().equals(bankName)){
+    public void removeBankByString(String bankName) {
+        for (Bank bank : banks) {
+            if (bank.getName().equals(bankName)) {
                 banks.remove(bank);
             }
         }

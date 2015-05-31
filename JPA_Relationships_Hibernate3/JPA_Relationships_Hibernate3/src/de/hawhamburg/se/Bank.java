@@ -1,11 +1,7 @@
 package de.hawhamburg.se;
 
+import javax.persistence.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-//Todo: Add annotations!
 @Entity
 public class Bank {
 
@@ -21,7 +17,8 @@ public class Bank {
     }
 
     @Id
-    @Column(name = "BANK_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "BANKGEN")
+    @SequenceGenerator(name = "BANKGEN",sequenceName = "BANKSEQ")
     public long getId() {
         return id;
     }

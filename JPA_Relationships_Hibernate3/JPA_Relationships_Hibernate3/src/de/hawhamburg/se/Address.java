@@ -1,49 +1,45 @@
 package de.hawhamburg.se;
 
 
+import javax.persistence.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-//Todo: Add annotations!
 @Entity
 public class Address {
 
-	private long id;
-	private String street;
+    private long id;
+    private String street;
 
-	public Address() {
-		// empty
-	}
+    public Address() {
+        // empty
+    }
 
-	public Address(final String street) {
-		this.street = street;
-	}
+    public Address(final String street) {
+        this.street = street;
+    }
 
     @Id
-	@Column(name = "ADDR_ID")
-	@GeneratedValue
-	public long getId() {
-		return id;
-	}
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ADDRESSGEN")
+    @SequenceGenerator(name = "ADDRESSGEN", sequenceName = "ADDRESSSEQ")
+    public long getId() {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    @Column(name="street",length=50)
-	public String getStreet() {
-		return street;
-	}
+    @Column(name = "street", length = 50)
+    public String getStreet() {
+        return street;
+    }
 
-	public void setStreet(final String street) {
-		this.street = street;
-	}
-	@Override
-	public String toString() {
-		return "Address[id=" + getId() + ", street=" + getStreet() + "]";
-	}
+    public void setStreet(final String street) {
+        this.street = street;
+    }
+
+    @Override
+    public String toString() {
+        return "Address[id=" + getId() + ", street=" + getStreet() + "]";
+    }
 
 }
