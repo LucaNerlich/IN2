@@ -1,7 +1,7 @@
-drop sequence customerseq;
-drop sequence addressseq;
-drop sequence creditcardseq;
-drop sequence bankseq;
+DROP SEQUENCE customerseq;
+DROP SEQUENCE addressseq;
+DROP SEQUENCE creditcardseq;
+DROP SEQUENCE bankseq;
 
 DROP TABLE creditcard CASCADE CONSTRAINTS;
 DROP TABLE customer CASCADE CONSTRAINTS;
@@ -9,40 +9,40 @@ DROP TABLE address CASCADE CONSTRAINTS;
 DROP TABLE bank CASCADE CONSTRAINTS;
 DROP TABLE bank_customer CASCADE CONSTRAINTS;
 
-create table address (
-	id number(32) primary key,
-	street varchar2(100)
+CREATE TABLE address (
+  id     NUMBER(32) PRIMARY KEY,
+  street VARCHAR2(100)
 );
 
-create sequence addressseq;
+CREATE SEQUENCE addressseq;
 
-create table customer (
-	id number(32) primary key,
-	name varchar2(50),
-	surname varchar2(50),
-	home_address_id number(32) references address(id)
+CREATE TABLE customer (
+  id              NUMBER(32) PRIMARY KEY,
+  name            VARCHAR2(50),
+  surname         VARCHAR2(50),
+  home_address_id NUMBER(32) REFERENCES address (id)
 );
 
-create sequence customerseq;
+CREATE SEQUENCE customerseq;
 
-create table creditcard (
-	id number(32) primary key,
-	ccnumber varchar2(16) unique,
-	customer_id number(32) references customer(id)
+CREATE TABLE creditcard (
+  id          NUMBER(32) PRIMARY KEY,
+  ccnumber    VARCHAR2(16) UNIQUE,
+  customer_id NUMBER(32) REFERENCES customer (id)
 );
 
-create sequence creditcardseq;
+CREATE SEQUENCE creditcardseq;
 
-create table bank (
-	id number(32) primary key,
-	name varchar2(200) unique
+CREATE TABLE bank (
+  id   NUMBER(32) PRIMARY KEY,
+  name VARCHAR2(200) UNIQUE
 );
 
-create sequence bankseq;
+CREATE SEQUENCE bankseq;
 
-create table bank_customer (
-	bank_id number(32) references bank(id),
-	customer_id number(32) references customer(id),
-	constraint BANK_CUSTOMER_PK primary key (bank_id, customer_id) 
+CREATE TABLE bank_customer (
+  bank_id     NUMBER(32) REFERENCES bank (id),
+  customer_id NUMBER(32) REFERENCES customer (id),
+  CONSTRAINT BANK_CUSTOMER_PK PRIMARY KEY (bank_id, customer_id)
 );
 

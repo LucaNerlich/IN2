@@ -2,14 +2,34 @@ package de.hawhamburg.se;
 
 /**
  * Base declarations for class CardIssuer.
- * @author Bernd Kahlbrandt
  *
+ * @author Bernd Kahlbrandt
  */
 public class CardIssuer {
 
-	private long id;
-	private String name;
+    private long id;
+    private String name;
 
+    public CardIssuer() {
+    }
 
+    public CardIssuer(String name) {
+        this.name = name;
+    }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
