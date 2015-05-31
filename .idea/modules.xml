@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/JDBC/JDBC/JDBC.iml" filepath="$PROJECT_DIR$/JDBC/JDBC/JDBC.iml" />
       <module fileurl="file://$PROJECT_DIR$/JPA_Annotations/JPA_Annotations_Hibernate3/JPA_Annotations_Hibernate3.iml" filepath="$PROJECT_DIR$/JPA_Annotations/JPA_Annotations_Hibernate3/JPA_Annotations_Hibernate3.iml" />
       <module fileurl="file://$PROJECT_DIR$/JPA_Locking_Hibernate3/JPA_Locking_Hibernate3/JPA_Locking_Hibernate3.iml" filepath="$PROJECT_DIR$/JPA_Locking_Hibernate3/JPA_Locking_Hibernate3/JPA_Locking_Hibernate3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JPA_Queries_Hibernate/JPA_Queries_Hibernate.iml" filepath="$PROJECT_DIR$/JPA_Queries_Hibernate/JPA_Queries_Hibernate.iml" />
       <module fileurl="file://$PROJECT_DIR$/JPA_Relationships_Hibernate3/JPA_Relationships_Hibernate3/JPA_Relationships_Hibernate3.iml" filepath="$PROJECT_DIR$/JPA_Relationships_Hibernate3/JPA_Relationships_Hibernate3/JPA_Relationships_Hibernate3.iml" />
       <module fileurl="file://$PROJECT_DIR$/JPA_XML/JPA_XML_Hibernate3/JPA_XML_Hibernate3.iml" filepath="$PROJECT_DIR$/JPA_XML/JPA_XML_Hibernate3/JPA_XML_Hibernate3.iml" />
       <module fileurl="file://$PROJECT_DIR$/JDBC/Libs/Libs.iml" filepath="$PROJECT_DIR$/JDBC/Libs/Libs.iml" />
