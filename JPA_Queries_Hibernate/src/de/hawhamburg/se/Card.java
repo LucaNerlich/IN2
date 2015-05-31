@@ -44,6 +44,8 @@ public class Card {
         this.type = type;
     }
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "CUSTOMER_ID", nullable = false)
     public Customer getHolder() {
         return holder;
     }

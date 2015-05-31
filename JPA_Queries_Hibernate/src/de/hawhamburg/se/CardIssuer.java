@@ -1,10 +1,13 @@
 package de.hawhamburg.se;
 
+import javax.persistence.*;
+
 /**
  * Base declarations for class CardIssuer.
  *
  * @author Bernd Kahlbrandt
  */
+@Entity
 public class CardIssuer {
 
     private long id;
@@ -17,6 +20,9 @@ public class CardIssuer {
         this.name = name;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CARDISSUERGEN")
+    @SequenceGenerator(name = "CARDISSUERGEN", sequenceName = "CARDISSUERSEQ")
     public long getId() {
         return id;
     }
@@ -25,6 +31,7 @@ public class CardIssuer {
         this.id = id;
     }
 
+    @Column(name = "name", length = 50)
     public String getName() {
         return name;
     }

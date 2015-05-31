@@ -10,8 +10,10 @@ DROP TABLE bank CASCADE CONSTRAINTS;
 DROP TABLE bank_customer CASCADE CONSTRAINTS;
 
 CREATE TABLE address (
-  id     NUMBER(32) PRIMARY KEY,
-  street VARCHAR2(100)
+  id       NUMBER(32) PRIMARY KEY,
+  postcode NUMBER(5),
+  street   VARCHAR2(100),
+  city     VARCHAR2(100)
 );
 
 CREATE SEQUENCE addressseq;
@@ -25,10 +27,19 @@ CREATE TABLE customer (
 
 CREATE SEQUENCE customerseq;
 
-CREATE TABLE creditcard (
+CREATE TABLE cardissuer (
+  id              NUMBER(32) PRIMARY KEY,
+  name            VARCHAR2(50)
+);
+
+CREATE SEQUENCE cardissuerseq;
+
+CREATE TABLE card (
   id          NUMBER(32) PRIMARY KEY,
   ccnumber    VARCHAR2(16) UNIQUE,
-  customer_id NUMBER(32) REFERENCES customer (id)
+  type        VARCHAR2(10),
+  customer_id NUMBER(32) REFERENCES customer (id),
+  cardissuer_id NUMBER(32) REFERENCES cardissuer (id)
 );
 
 CREATE SEQUENCE creditcardseq;

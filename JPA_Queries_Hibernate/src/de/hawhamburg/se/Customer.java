@@ -7,6 +7,7 @@ import java.util.Set;
 /**
  * Base declarations for class Customer.
  */
+@Entity
 public class Customer {
 
     private long id;
