@@ -36,6 +36,8 @@ public class Card {
         this.number = number;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cardtype", length = 50)
     public CardType getType() {
         return type;
     }

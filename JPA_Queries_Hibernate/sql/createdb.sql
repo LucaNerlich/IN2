@@ -37,7 +37,7 @@ CREATE SEQUENCE cardissuerseq;
 CREATE TABLE card (
   id          NUMBER(32) PRIMARY KEY,
   ccnumber    VARCHAR2(16) UNIQUE,
-  type        VARCHAR2(10),
+  cardtype        VARCHAR2(6),
   customer_id NUMBER(32) REFERENCES customer (id),
   cardissuer_id NUMBER(32) REFERENCES cardissuer (id)
 );
