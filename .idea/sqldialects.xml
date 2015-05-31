@@ -3,6 +3,7 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/JPA_Annotations/JPA_Annotations_Hibernate3/sql/createdb.sql" dialect="OracleSqlPlus" />
     <file url="file://$PROJECT_DIR$/JPA_Locking_Hibernate3/JPA_Locking_Hibernate3/sql/createdb.sql" dialect="OracleSqlPlus" />
+    <file url="file://$PROJECT_DIR$/JPA_Queries_Hibernate/sql/createdb.sql" dialect="Oracle" />
     <file url="file://$PROJECT_DIR$/JPA_Relationships_Hibernate3/JPA_Relationships_Hibernate3/sql/createdb.sql" dialect="OracleSqlPlus" />
   </component>
 </project>
