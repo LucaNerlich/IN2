@@ -57,3 +57,10 @@ CREATE TABLE bank_customer (
   CONSTRAINT BANK_CUSTOMER_PK PRIMARY KEY (bank_id, customer_id)
 );
 
+CREATE TABLE office_address (
+  bank_id     NUMBER(32) REFERENCES bank (id),
+  address_id NUMBER(32) REFERENCES address (id),
+  CONSTRAINT OFFICE_ADDRESS_PK PRIMARY KEY (bank_id, address_id)
+);
+
+

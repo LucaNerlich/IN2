@@ -43,6 +43,31 @@ public class Bank {
         this.name = name;
     }
 
+    @OneToMany
+    @JoinTable(
+            name="office_address",
+            joinColumns = @JoinColumn( name="bank_id"),
+            inverseJoinColumns = @JoinColumn( name="address_id")
+    )
+    public Set<Address> getOffices() {
+        return offices;
+    }
+
+    public void setOffices(Set<Address> offices) {
+        this.offices = offices;
+    }
+
+    public void addOfficeByAddress(Address address){
+        offices.add(address);
+    }
+
+    public void removeOffice(Address address){
+
+        boolean officeremoved = offices.remove(address);
+
+        System.out.println("Office removed: " + officeremoved);
+    }
+
     @Override
     public String toString() {
         return "Bank[id=" + getId() + ", name=" + getName() + "]";
