@@ -16,6 +16,13 @@ public class Card {
     private Customer holder;
     private CardIssuer issuer;
 
+    public Card(String number, CardType type, Customer holder, CardIssuer issuer) {
+        this.number = number;
+        this.type = type;
+        this.holder = holder;
+        this.issuer = issuer;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CREDITCARDGEN")
     @SequenceGenerator(name = "CREDITCARDGEN", sequenceName = "CREDITCARDSEQ")
@@ -46,8 +53,8 @@ public class Card {
         this.type = type;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CUSTOMER_ID", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id",  unique = true, nullable = false, updatable = false)
     public Customer getHolder() {
         return holder;
     }
@@ -56,6 +63,8 @@ public class Card {
         this.holder = holder;
     }
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_issuer_id", unique = true, nullable = false, updatable = false)
     public CardIssuer getIssuer() {
         return issuer;
     }
