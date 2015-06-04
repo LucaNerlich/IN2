@@ -4,7 +4,9 @@ import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -48,6 +50,24 @@ public class JPAQueryTest {
     public static void tearDownClass() {
         transactionManager.disconnect();
         transactionManager = null;
+    }
+
+    private static String getUsername() {
+    /* Benutzername abfragen */
+        return JOptionPane
+                .showInputDialog("Enter Username");
+    }
+
+    private static String getPassword() {
+    /* Passwort abfragen */
+
+        JPasswordField passwordField = new JPasswordField(10);
+        passwordField.setEchoChar('*');
+        JOptionPane.showMessageDialog(null, passwordField,
+                "Enter password", JOptionPane.OK_OPTION);
+        char[] pw = passwordField.getPassword();
+
+        return String.valueOf(pw);
     }
 
     @Before
@@ -105,22 +125,6 @@ public class JPAQueryTest {
         em2 = emf2.createEntityManager();
     }
 
-    private static final class CustomerObjectBuilder implements
-            TransactionManager.ObjectBuilder<Customer> {
-
-        @Override
-        public Customer buildObjectFromRow(final ResultSet rs)
-                throws SQLException {
-
-            Customer customer = new Customer();
-            customer.setId(rs.getLong("ID"));
-            customer.setName(rs.getString("NAME"));
-            customer.setSurname(rs.getString("SURNAME"));
-
-            return customer;
-        }
-    }
-
     @Test
     public void testEntityManagers() throws SQLException {
         createEntityManagers();
@@ -132,17 +136,17 @@ public class JPAQueryTest {
 
     // Finden aller Kunden, die einen bestimmten Kartentyp haben (CardType). Ausgabe von Name und Kartentyp.
     @Test
-    public void testFindbyCardType(){
+    public void testFindbyCardType() {
         insertDataIntoDB();
         try {
             final List<Customer> customers = selectAllCustomers();
             for (final Customer customer : customers) {
-                for(Card card : customer.getCreditCards()){
-                    if(card.getType() == CardType.CREDIT){
+                for (Card card : customer.getCreditCards()) {
+                    if (card.getType() == CardType.CREDIT) {
                         System.out.println(customer.getSurname());
                         System.out.println("CREDIT");
                     }
-                    if(card.getType() == CardType.DEBIT){
+                    if (card.getType() == CardType.DEBIT) {
                         System.out.println(customer.getSurname());
                         System.out.println("DEBIT");
                     }
@@ -156,10 +160,10 @@ public class JPAQueryTest {
 
     @Test
     public void testInsert() {
-       insertDataIntoDB();
+        insertDataIntoDB();
     }
 
-    private void insertDataIntoDB(){
+    private void insertDataIntoDB() {
         try {
             createEntityManagers();
             final Customer konrad = new Customer(Messages.getString("INP5.0"), Messages.getString("INP5.1"));
@@ -169,8 +173,8 @@ public class JPAQueryTest {
             CardIssuer visa = new CardIssuer("VISA");
             CardIssuer mastercard = new CardIssuer("MASTERCARD");
 
-            Card cardVisa = new Card("2015", CardType.CREDIT,konrad, visa);
-            Card cardMaster = new Card("5102", CardType.DEBIT,konrad, mastercard);
+            Card cardVisa = new Card("2015", CardType.CREDIT, konrad, visa);
+            Card cardMaster = new Card("5102", CardType.DEBIT, konrad, mastercard);
 
             konrad.addCreditCard(cardVisa);
             konrad.addCreditCard(cardMaster);
@@ -216,21 +220,19 @@ public class JPAQueryTest {
         return transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
     }
 
-    private static String getUsername() {
-    /* Benutzername abfragen */
-        return JOptionPane
-                .showInputDialog("Enter Username");
-    }
+    private static final class CustomerObjectBuilder implements
+            TransactionManager.ObjectBuilder<Customer> {
 
-    private static String getPassword() {
-    /* Passwort abfragen */
+        @Override
+        public Customer buildObjectFromRow(final ResultSet rs)
+                throws SQLException {
 
-        JPasswordField passwordField = new JPasswordField(10);
-        passwordField.setEchoChar('*');
-        JOptionPane.showMessageDialog(null, passwordField,
-                "Enter password", JOptionPane.OK_OPTION);
-        char[] pw = passwordField.getPassword();
+            Customer customer = new Customer();
+            customer.setId(rs.getLong("ID"));
+            customer.setName(rs.getString("NAME"));
+            customer.setSurname(rs.getString("SURNAME"));
 
-        return String.valueOf(pw);
+            return customer;
+        }
     }
 }

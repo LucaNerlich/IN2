@@ -25,7 +25,7 @@ CREATE TABLE customer (
   id              NUMBER(32) PRIMARY KEY,
   name            VARCHAR2(50),
   surname         VARCHAR2(50),
-  home_address_id NUMBER(32) REFERENCES address (id)
+  home_address_id NUMBER(32) REFERENCES address (id) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE customerseq;
@@ -41,8 +41,8 @@ CREATE TABLE card (
   id          NUMBER(32) PRIMARY KEY,
   ccnumber    VARCHAR2(16) UNIQUE,
   cardtype        VARCHAR2(6),
-  holder_id NUMBER(32) REFERENCES customer (id),
-  cardissuer_id NUMBER(32) REFERENCES cardissuer (id)
+  holder_id NUMBER(32) REFERENCES customer (id) ON DELETE CASCADE,
+  cardissuer_id NUMBER(32) REFERENCES cardissuer (id) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE creditcardseq;
@@ -55,14 +55,14 @@ CREATE TABLE bank (
 CREATE SEQUENCE bankseq;
 
 CREATE TABLE bank_customer (
-  bank_id     NUMBER(32) REFERENCES bank (id),
-  customer_id NUMBER(32) REFERENCES customer (id),
+  bank_id     NUMBER(32) REFERENCES bank (id) ON DELETE CASCADE,
+  customer_id NUMBER(32) REFERENCES customer (id) ON DELETE CASCADE,
   CONSTRAINT BANK_CUSTOMER_PK PRIMARY KEY (bank_id, customer_id)
 );
 
 CREATE TABLE office_address (
-  bank_id     NUMBER(32) REFERENCES bank (id),
-  address_id NUMBER(32) REFERENCES address (id),
+  bank_id     NUMBER(32) REFERENCES bank (id) ON DELETE CASCADE,
+  address_id NUMBER(32) REFERENCES address (id) ON DELETE CASCADE,
   CONSTRAINT OFFICE_ADDRESS_PK PRIMARY KEY (bank_id, address_id)
 );
 

@@ -57,7 +57,7 @@ public class Customer {
         this.surname = surname;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "home_address_id", unique = true, nullable = false, updatable = false)
     public Address getHomeAddress() {
         return homeAddress;
@@ -67,7 +67,7 @@ public class Customer {
         this.homeAddress = address;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "holder", orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "holder", orphanRemoval = true)
     public Set<Card> getCreditCards() {
         if (creditCards == null) {
             creditCards = new HashSet<Card>();
