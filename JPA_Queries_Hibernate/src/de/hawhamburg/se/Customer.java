@@ -26,7 +26,6 @@ public class Customer {
         this.surname = surname;
         banks = new HashSet<>();
         creditCards = new HashSet<>();
-
     }
 
     @Id

@@ -118,6 +118,34 @@ public class JPAQueryTest {
         em2.getTransaction().commit();
     }
 
+    @Test
+    public void testInsert() {
+        try {
+            createEntityManagers();
+            final Customer konrad = new Customer(Messages.getString("INP5.0"), Messages.getString("INP5.1"));
+            Address addressKonrad = new Address("20099", "Hamburg", "Berliner Tor");
+            konrad.setHomeAddress(addressKonrad);
+
+            CardIssuer visa = new CardIssuer("VISA");
+            CardIssuer mastercard = new CardIssuer("MASTERCARD");
+
+            Card cardVisa = new Card("2015", CardType.CREDIT,konrad, visa);
+            Card cardMaster = new Card("5102", CardType.DEBIT,konrad, mastercard);
+
+            konrad.addCreditCard(cardVisa);
+            konrad.addCreditCard(cardMaster);
+
+            em1.getTransaction().begin();
+            em1.persist(konrad);
+            em1.getTransaction().commit();
+
+            assertTrue(isCustomerOnDB(konrad.getId(), konrad.getSurname(), konrad.getName()));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private boolean isCustomerOnDB(final long id, final String surname,
                                    final String name) throws SQLException {
         final List<Object> parameters = new ArrayList<Object>();
@@ -129,6 +157,15 @@ public class JPAQueryTest {
                         .executeSQLQuerySingleResult(
                                 "select count(*) from CUSTOMER where ID = ? and SURNAME = ? and NAME = ?",
                                 parameters));
+    }
+
+    public long getNextCustomerId() throws SQLException {
+        final Object result = transactionManager.executeSQLQuerySingleResult(
+                "select CUSTOMERSEQ.NEXTVAL from DUAL",
+                TransactionManager.EMPTY_PARAMETERS);
+        assert result != null;
+        assert result instanceof BigDecimal : "Is: " + result.getClass();
+        return ((BigDecimal) result).longValue();
     }
 
     private static String getUsername() {

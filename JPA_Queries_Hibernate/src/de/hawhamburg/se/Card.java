@@ -16,6 +16,10 @@ public class Card {
     private Customer holder;
     private CardIssuer issuer;
 
+    public Card() {
+        //
+    }
+
     public Card(String number, CardType type, Customer holder, CardIssuer issuer) {
         this.number = number;
         this.type = type;
@@ -53,8 +57,7 @@ public class Card {
         this.type = type;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id",  unique = true, nullable = false, updatable = false)
+    @ManyToOne(cascade=CascadeType.ALL)
     public Customer getHolder() {
         return holder;
     }
@@ -64,7 +67,7 @@ public class Card {
     }
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "card_issuer_id", unique = true, nullable = false, updatable = false)
+    @JoinColumn(name = "cardissuer_id", unique = true, nullable = false, updatable = false)
     public CardIssuer getIssuer() {
         return issuer;
     }

@@ -1,0 +1,131 @@
+Jun 04, 2015 12:52:33 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:33 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:33 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:33 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [
+	name: haw_demo
+	...]
+Jun 04, 2015 12:52:34 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate Core {4.3.9.Final}
+Jun 04, 2015 12:52:34 PM org.hibernate.cfg.Environment <clinit>
+INFO: HHH000206: hibernate.properties not found
+Jun 04, 2015 12:52:34 PM org.hibernate.cfg.Environment buildBytecodeProvider
+INFO: HHH000021: Bytecode provider name : javassist
+Jun 04, 2015 12:52:35 PM org.hibernate.annotations.common.reflection.java.JavaReflectionManager <clinit>
+INFO: HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+Jun 04, 2015 12:52:35 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH000402: Using Hibernate built-in connection pool (not for production use!)
+Jun 04, 2015 12:52:35 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000401: using driver [oracle.jdbc.driver.OracleDriver] at URL [jdbc:oracle:thin:@//ora14.informatik.haw-hamburg.de:1521/inf14.informatik.haw-hamburg.de]
+Jun 04, 2015 12:52:35 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000046: Connection properties: {user=abq322, password=****}
+Jun 04, 2015 12:52:35 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000006: Autocommit mode: false
+Jun 04, 2015 12:52:35 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+INFO: HHH000115: Hibernate connection pool size: 20 (min=1)
+Jun 04, 2015 12:52:36 PM org.hibernate.dialect.Dialect <init>
+INFO: HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect
+Jun 04, 2015 12:52:37 PM org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory <init>
+INFO: HHH000397: Using ASTQueryTranslatorFactory
+Jun 04, 2015 12:52:38 PM org.hibernate.tuple.PojoInstantiator <init>
+INFO: HHH000182: No default (no-argument) constructor for class: de.hawhamburg.se.Card (class must be instantiated by Interceptor)
+Jun 04, 2015 12:52:38 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:38 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:38 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:38 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [
+	name: haw_demo
+	...]
+Jun 04, 2015 12:52:38 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH000402: Using Hibernate built-in connection pool (not for production use!)
+Jun 04, 2015 12:52:38 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000401: using driver [oracle.jdbc.driver.OracleDriver] at URL [jdbc:oracle:thin:@//ora14.informatik.haw-hamburg.de:1521/inf14.informatik.haw-hamburg.de]
+Jun 04, 2015 12:52:38 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000046: Connection properties: {user=abq322, password=****}
+Jun 04, 2015 12:52:38 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000006: Autocommit mode: false
+Jun 04, 2015 12:52:38 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+INFO: HHH000115: Hibernate connection pool size: 20 (min=1)
+Jun 04, 2015 12:52:38 PM org.hibernate.dialect.Dialect <init>
+INFO: HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect
+Jun 04, 2015 12:52:39 PM org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory <init>
+INFO: HHH000397: Using ASTQueryTranslatorFactory
+Jun 04, 2015 12:52:39 PM org.hibernate.tuple.PojoInstantiator <init>
+INFO: HHH000182: No default (no-argument) constructor for class: de.hawhamburg.se.Card (class must be instantiated by Interceptor)
+Jun 04, 2015 12:52:39 PM org.hibernate.jpa.internal.EntityManagerFactoryRegistry addEntityManagerFactory
+WARN: HHH000436: Entity manager factory name (haw_demo) is already registered.  If entity manager will be clustered or passivated, specify a unique value for property 'hibernate.ejb.entitymanager_factory_name'
+Jun 04, 2015 12:52:39 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl stop
+INFO: HHH000030: Cleaning up connection pool [jdbc:oracle:thin:@//ora14.informatik.haw-hamburg.de:1521/inf14.informatik.haw-hamburg.de]
+Jun 04, 2015 12:52:39 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl stop
+INFO: HHH000030: Cleaning up connection pool [jdbc:oracle:thin:@//ora14.informatik.haw-hamburg.de:1521/inf14.informatik.haw-hamburg.de]
+Jun 04, 2015 12:52:39 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:39 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:39 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:39 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [
+	name: haw_demo
+	...]
+Jun 04, 2015 12:52:39 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH000402: Using Hibernate built-in connection pool (not for production use!)
+Jun 04, 2015 12:52:39 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000401: using driver [oracle.jdbc.driver.OracleDriver] at URL [jdbc:oracle:thin:@//ora14.informatik.haw-hamburg.de:1521/inf14.informatik.haw-hamburg.de]
+Jun 04, 2015 12:52:39 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000046: Connection properties: {user=abq322, password=****}
+Jun 04, 2015 12:52:39 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000006: Autocommit mode: false
+Jun 04, 2015 12:52:39 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+INFO: HHH000115: Hibernate connection pool size: 20 (min=1)
+Jun 04, 2015 12:52:39 PM org.hibernate.dialect.Dialect <init>
+INFO: HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect
+Jun 04, 2015 12:52:39 PM org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory <init>
+INFO: HHH000397: Using ASTQueryTranslatorFactory
+Jun 04, 2015 12:52:39 PM org.hibernate.tuple.PojoInstantiator <init>
+INFO: HHH000182: No default (no-argument) constructor for class: de.hawhamburg.se.Card (class must be instantiated by Interceptor)
+Jun 04, 2015 12:52:39 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:39 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:39 PM org.hibernate.ejb.HibernatePersistence logDeprecation
+WARN: HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+Jun 04, 2015 12:52:39 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [
+	name: haw_demo
+	...]
+Jun 04, 2015 12:52:40 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH000402: Using Hibernate built-in connection pool (not for production use!)
+Jun 04, 2015 12:52:40 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000401: using driver [oracle.jdbc.driver.OracleDriver] at URL [jdbc:oracle:thin:@//ora14.informatik.haw-hamburg.de:1521/inf14.informatik.haw-hamburg.de]
+Jun 04, 2015 12:52:40 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000046: Connection properties: {user=abq322, password=****}
+Jun 04, 2015 12:52:40 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH000006: Autocommit mode: false
+Jun 04, 2015 12:52:40 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+INFO: HHH000115: Hibernate connection pool size: 20 (min=1)
+Jun 04, 2015 12:52:40 PM org.hibernate.dialect.Dialect <init>
+INFO: HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect
+Jun 04, 2015 12:52:40 PM org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory <init>
+INFO: HHH000397: Using ASTQueryTranslatorFactory
+Jun 04, 2015 12:52:40 PM org.hibernate.tuple.PojoInstantiator <init>
+INFO: HHH000182: No default (no-argument) constructor for class: de.hawhamburg.se.Card (class must be instantiated by Interceptor)
+Jun 04, 2015 12:52:40 PM org.hibernate.jpa.internal.EntityManagerFactoryRegistry addEntityManagerFactory
+WARN: HHH000436: Entity manager factory name (haw_demo) is already registered.  If entity manager will be clustered or passivated, specify a unique value for property 'hibernate.ejb.entitymanager_factory_name'
+Jun 04, 2015 12:52:40 PM org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions
+WARN: SQL Error: 904, SQLState: 42000
+Jun 04, 2015 12:52:40 PM org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions
+ERROR: ORA-00904: "HOLDER_ID": ungültiger Bezeichner
+
+Jun 04, 2015 12:52:40 PM org.hibernate.engine.jdbc.batch.internal.AbstractBatchImpl release
+INFO: HHH000010: On release of batch it still contained JDBC statements
+Jun 04, 2015 12:52:40 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl stop
+INFO: HHH000030: Cleaning up connection pool [jdbc:oracle:thin:@//ora14.informatik.haw-hamburg.de:1521/inf14.informatik.haw-hamburg.de]
+Jun 04, 2015 12:52:40 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl stop
+INFO: HHH000030: Cleaning up connection pool [jdbc:oracle:thin:@//ora14.informatik.haw-hamburg.de:1521/inf14.informatik.haw-hamburg.de]
