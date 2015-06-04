@@ -57,7 +57,7 @@ public class Card {
         this.type = type;
     }
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     public Customer getHolder() {
         return holder;
     }

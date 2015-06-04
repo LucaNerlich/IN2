@@ -67,7 +67,7 @@ public class Customer {
         this.homeAddress = address;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "holder")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "holder", orphanRemoval=true)
     public Set<Card> getCreditCards() {
         if (creditCards == null) {
             creditCards = new HashSet<Card>();
@@ -85,7 +85,7 @@ public class Customer {
         }
     }
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "BANK_CUSTOMER",
             joinColumns = @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "BANK_ID", referencedColumnName = "ID"))

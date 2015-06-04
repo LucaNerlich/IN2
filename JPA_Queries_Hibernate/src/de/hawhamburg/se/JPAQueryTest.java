@@ -52,6 +52,18 @@ public class JPAQueryTest {
 
     @Before
     public void setUp() throws SQLException {
+        transactionManager.executeSQLDeleteOrUpdate("delete from ADDRESS",
+                TransactionManager.EMPTY_PARAMETERS);
+        transactionManager.executeSQLDeleteOrUpdate("delete from CARDISSUER",
+                TransactionManager.EMPTY_PARAMETERS);
+        transactionManager.executeSQLDeleteOrUpdate("delete from CARD",
+                TransactionManager.EMPTY_PARAMETERS);
+        transactionManager.executeSQLDeleteOrUpdate("delete from BANK",
+                TransactionManager.EMPTY_PARAMETERS);
+        transactionManager.executeSQLDeleteOrUpdate("delete from bank_customer",
+                TransactionManager.EMPTY_PARAMETERS);
+        transactionManager.executeSQLDeleteOrUpdate("delete from office_address",
+                TransactionManager.EMPTY_PARAMETERS);
         transactionManager.executeSQLDeleteOrUpdate("delete from CUSTOMER",
                 TransactionManager.EMPTY_PARAMETERS);
         transactionManager.commit();
@@ -118,8 +130,36 @@ public class JPAQueryTest {
         em2.getTransaction().commit();
     }
 
+    // Finden aller Kunden, die einen bestimmten Kartentyp haben (CardType). Ausgabe von Name und Kartentyp.
+    @Test
+    public void testFindbyCardType(){
+        insertDataIntoDB();
+        try {
+            final List<Customer> customers = selectAllCustomers();
+            for (final Customer customer : customers) {
+                for(Card card : customer.getCreditCards()){
+                    if(card.getType() == CardType.CREDIT){
+                        System.out.println(customer.getSurname());
+                        System.out.println("CREDIT");
+                    }
+                    if(card.getType() == CardType.DEBIT){
+                        System.out.println(customer.getSurname());
+                        System.out.println("DEBIT");
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Test
     public void testInsert() {
+       insertDataIntoDB();
+    }
+
+    private void insertDataIntoDB(){
         try {
             createEntityManagers();
             final Customer konrad = new Customer(Messages.getString("INP5.0"), Messages.getString("INP5.1"));
@@ -166,6 +206,14 @@ public class JPAQueryTest {
         assert result != null;
         assert result instanceof BigDecimal : "Is: " + result.getClass();
         return ((BigDecimal) result).longValue();
+    }
+
+    public List<Customer> selectAllCustomers() throws SQLException {
+        //Todo: Bitte ausprogrammieren!
+
+        TransactionManager.ObjectBuilder objectBuilder = new CustomerObjectBuilder();
+
+        return transactionManager.executeSQLQuery(Messages.getString("INP3.1"), objectBuilder);
     }
 
     private static String getUsername() {
