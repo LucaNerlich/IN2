@@ -3,7 +3,7 @@ DROP SEQUENCE addressseq;
 DROP SEQUENCE creditcardseq;
 DROP SEQUENCE bankseq;
 
-DROP TABLE creditcard CASCADE CONSTRAINTS;
+DROP TABLE card CASCADE CONSTRAINTS;
 DROP TABLE customer CASCADE CONSTRAINTS;
 DROP TABLE address CASCADE CONSTRAINTS;
 DROP TABLE bank CASCADE CONSTRAINTS;
@@ -38,7 +38,7 @@ CREATE TABLE card (
   id          NUMBER(32) PRIMARY KEY,
   ccnumber    VARCHAR2(16) UNIQUE,
   cardtype        VARCHAR2(6),
-  customer_id NUMBER(32) REFERENCES customer (id),
+  holder_id NUMBER(32) REFERENCES customer (id),
   cardissuer_id NUMBER(32) REFERENCES cardissuer (id)
 );
 
