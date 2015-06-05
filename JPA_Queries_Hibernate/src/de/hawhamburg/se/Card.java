@@ -75,4 +75,15 @@ public class Card {
     public void setIssuer(CardIssuer issuer) {
         this.issuer = issuer;
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", number='" + number + '\'' +
+                ", type=" + type +
+                ", holder=" + holder +
+                ", issuer=" + issuer +
+                '}';
+    }
 }

@@ -1,6 +1,7 @@
 package de.hawhamburg.se;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -21,6 +22,7 @@ public class Bank {
 
     public Bank(final String name) {
         this.name = name;
+        offices = new HashSet<>();
     }
 
     @Id
@@ -43,7 +45,7 @@ public class Bank {
         this.name = name;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name="office_address",
             joinColumns = @JoinColumn( name="bank_id"),

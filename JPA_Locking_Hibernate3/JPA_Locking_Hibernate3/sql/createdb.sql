@@ -1,19 +1,12 @@
-drop sequence customerseq;
-drop sequence addressseq;
-drop sequence creditcardseq;
-drop sequence bankseq;
+DROP SEQUENCE customerseq;
+DROP TABLE customer;
 
-drop table creditcard;
-drop table address;
-drop table bank_customer;
-drop table customer;
-drop table bank;
-create table customer (
-	id number(32) primary key,
-	name varchar2(50),
-	surname varchar2(50),
-	optlock number(32) default 1 not null
+CREATE TABLE customer (
+  id      NUMBER(32) PRIMARY KEY,
+  name    VARCHAR2(50),
+  surname VARCHAR2(50),
+  optlock NUMBER(32) DEFAULT 1 NOT NULL
 );
 
-create sequence customerseq;
+CREATE SEQUENCE customerseq;
 
