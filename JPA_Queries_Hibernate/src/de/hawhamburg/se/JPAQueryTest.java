@@ -178,7 +178,7 @@ public class JPAQueryTest {
        // javax.persistence.Query query = em1.createNativeQuery(queryString);
         // query.setParameter(1, "CREDIT");
 
-        List<Object> list = findWithName("CREDIT");
+        List<Object> list = findWithName2("CREDIT");
         System.out.println("xx");
 
 
@@ -192,11 +192,9 @@ public class JPAQueryTest {
                 .getResultList();
     }
 
-    public List findWithNam32e(String name) {
+    public List findWithName2(String name) {
         return em1.createQuery(
-                "SELECT c FROM Customer c WHERE c.name LIKE :custName")
-                .setParameter("custName", name)
-                .getResultList();
+                "SELECT c FROM Customer c").getResultList();
     }
 
     @Test
