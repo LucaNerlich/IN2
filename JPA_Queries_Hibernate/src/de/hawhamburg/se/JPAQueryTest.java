@@ -4,9 +4,7 @@ import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -19,6 +17,10 @@ import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
+@NamedQueries({
+        @NamedQuery(name ="x", query="x"),
+        @NamedQuery(name ="y", query="y")
+})
 public class JPAQueryTest {
     private static final String DB_URL = Messages.getString("INP2.0"); //$NON-NLS-1$
     private static final String DB_USER = getUsername();
