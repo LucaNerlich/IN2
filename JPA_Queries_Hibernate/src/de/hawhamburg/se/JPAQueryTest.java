@@ -175,7 +175,7 @@ public class JPAQueryTest {
         // String queryString = "SELECT Name, Surname, CCNumber FROM Customer, Card, WHERE Card.holder_id = Customer.id and cardtype = ?1";
         // Select Name, Surname, CCNumber From customer, Card, where card.holder_id=customer.id and cardtype like 'credit';
 
-        javax.persistence.Query query = em1.createNativeQuery(queryString);
+       // javax.persistence.Query query = em1.createNativeQuery(queryString);
         // query.setParameter(1, "CREDIT");
 
         List<Object> list = findWithName("CREDIT");
