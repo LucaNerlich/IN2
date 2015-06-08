@@ -178,23 +178,20 @@ public class JPAQueryTest {
        // javax.persistence.Query query = em1.createNativeQuery(queryString);
         // query.setParameter(1, "CREDIT");
 
-        List<Object> list = findWithName2("CREDIT");
+        //query:
+        List<Object> list = findWithName("CREDIT");
         System.out.println("xx");
 
+        //named query:
 
         em1.getTransaction().commit();
     }
 
     public List findWithName(String type) {
         return em1.createNativeQuery(
-                "SELECT Surname FROM Customer JOIN Card Where Card.holder_id = Customer.id and Card.cardtype LIKE :type")
+                "SELECT cu.surname, ca.cardtype FROM Customer cu, Card ca Where cu.id like ca.holder_id and ca.cardtype LIKE :type")
                 .setParameter("type", type)
                 .getResultList();
-    }
-
-    public List findWithName2(String name) {
-        return em1.createQuery(
-                "SELECT c FROM Customer c").getResultList();
     }
 
     @Test
