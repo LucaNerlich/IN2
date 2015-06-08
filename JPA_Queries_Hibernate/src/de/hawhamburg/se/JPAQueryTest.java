@@ -4,7 +4,9 @@ import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -17,10 +19,6 @@ import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
-@NamedQueries({
-        @NamedQuery(name ="x", query="x"),
-        @NamedQuery(name ="y", query="y")
-})
 public class JPAQueryTest {
     private static final String DB_URL = Messages.getString("INP2.0"); //$NON-NLS-1$
     private static final String DB_USER = getUsername();
@@ -128,7 +126,7 @@ public class JPAQueryTest {
         em2 = emf2.createEntityManager();
     }
 
-    // @Test
+    @Test
     public void testEntityManagers() throws SQLException {
         createEntityManagers();
         em1.getTransaction().begin();
@@ -173,28 +171,25 @@ public class JPAQueryTest {
         createEntityManagers();
         em1.getTransaction().begin();
 
-
-        // String queryString = "SELECT Name, Surname, CCNumber FROM Customer, Card, WHERE Card.holder_id = Customer.id and cardtype = ?1";
-        // Select Name, Surname, CCNumber From customer, Card, where card.holder_id=customer.id and cardtype like 'credit';
-
-       // javax.persistence.Query query = em1.createNativeQuery(queryString);
-        // query.setParameter(1, "CREDIT");
-
         //query:
-        List<Object> list = findWithName("CREDIT");
+        List list = em1.createNativeQuery(
+                "SELECT cu.surname, ca.cardtype FROM Customer cu, Card ca Where cu.id like ca.holder_id and ca.cardtype LIKE :type")
+                .setParameter("type", "CREDIT")
+                .getResultList();
+
         System.out.println("xx");
 
+        /*
         //named query:
+        TypedQuery<Customer> query =
+                em1.createNamedQuery("Customer.FindbyCardType", Customer.class);
+        List<Customer> results = query.getResultList();
+        System.out.println("xx");
+        */
 
         em1.getTransaction().commit();
     }
 
-    public List findWithName(String type) {
-        return em1.createNativeQuery(
-                "SELECT cu.surname, ca.cardtype FROM Customer cu, Card ca Where cu.id like ca.holder_id and ca.cardtype LIKE :type")
-                .setParameter("type", type)
-                .getResultList();
-    }
 
     @Test
     public void testCustomerAndBank() {
@@ -230,6 +225,12 @@ public class JPAQueryTest {
         createEntityManagers();
         em1.getTransaction().begin();
 
+        //query
+        List list = em1.createNativeQuery(
+                "SELECT CUSTOMER.NAME, BANK.NAME AS Bank_Name FROM BANK_CUSTOMER, CUSTOMER, BANK WHERE BANK_CUSTOMER.BANK_ID=BANK.ID AND BANK_CUSTOMER.CUSTOMER_ID= BANK_CUSTOMER.CUSTOMER_ID")
+                .getResultList();
+
+        System.out.println("xx");
         em1.getTransaction().commit();
     }
 
@@ -269,7 +270,12 @@ public class JPAQueryTest {
         insertDataIntoDB();
         createEntityManagers();
         em1.getTransaction().begin();
+        //query
+        List list = em1.createNativeQuery(
+                "SELECT DISTINCT CUSTOMER.NAME, BANK.NAME AS Bank_Name, CITY, STREET FROM BANK_CUSTOMER, CUSTOMER, BANK, ADDRESS WHERE BANK_CUSTOMER.BANK_ID=BANK.ID AND BANK_CUSTOMER.CUSTOMER_ID= BANK_CUSTOMER.CUSTOMER_ID AND ADDRESS.ID IN (SELECT ADDRESS.ID FROM OFFICE_ADDRESS, BANK WHERE OFFICE_ADDRESS.ADDRESS_ID=ADDRESS.ID AND OFFICE_ADDRESS.BANK_ID=BANK.ID) AND CITY = 'Bremen'")
+                .getResultList();
 
+        System.out.println("xx");
         em1.getTransaction().commit();
     }
 
@@ -304,6 +310,13 @@ public class JPAQueryTest {
         insertDataIntoDB();
         createEntityManagers();
         em1.getTransaction().begin();
+
+        //query
+        List list = em1.createNativeQuery(
+                "SELECT Card.CCNUMBER, Card.CARDTYPE FROM CUSTOMER, CARD WHERE CUSTOMER.ID = CARD.HOLDER_ID AND CUSTOMER.NAME = 'Konrad'")
+                .getResultList();
+
+        System.out.println("xx");
 
         em1.getTransaction().commit();
     }

@@ -4,9 +4,13 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Base declarations for class Customer.
- */
+//http://stackoverflow.com/questions/18092103/typesafe-named-native-query-in-hibernate
+@NamedNativeQueries({
+        @NamedNativeQuery(name ="Customer.FindbyCardType", query="SELECT cu.surname, ca.cardtype FROM Customer cu, Card ca Where cu.id like ca.holder_id and ca.cardtype LIKE 'CREDIT'"),
+        @NamedNativeQuery(name ="Customer.CustomerAndBank", query="SELECT CUSTOMER.NAME, BANK.NAME AS Bank_Name FROM BANK_CUSTOMER, CUSTOMER, BANK WHERE BANK_CUSTOMER.BANK_ID=BANK.ID AND BANK_CUSTOMER.CUSTOMER_ID= BANK_CUSTOMER.CUSTOMER_ID"),
+        @NamedNativeQuery(name ="Customer.CustomerCityBanks", query="SELECT DISTINCT CUSTOMER.NAME, BANK.NAME AS Bank_Name, CITY, STREET FROM BANK_CUSTOMER, CUSTOMER, BANK, ADDRESS WHERE BANK_CUSTOMER.BANK_ID=BANK.ID AND BANK_CUSTOMER.CUSTOMER_ID= BANK_CUSTOMER.CUSTOMER_ID AND ADDRESS.ID IN (SELECT ADDRESS.ID FROM OFFICE_ADDRESS, BANK WHERE OFFICE_ADDRESS.ADDRESS_ID=ADDRESS.ID AND OFFICE_ADDRESS.BANK_ID=BANK.ID) AND CITY = 'Bremen'"),
+        @NamedNativeQuery(name ="Customer.CustomerAndCards", query="SELECT Card.CCNUMBER, Card.CARDTYPE FROM CUSTOMER, CARD WHERE CUSTOMER.ID=CARD.HOLDER_ID AND CUSTOMER.NAME='Konrad'")
+})
 @Entity
 public class Customer {
 

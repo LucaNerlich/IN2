@@ -57,7 +57,9 @@
           <root url="file://$MODULE_DIR$/../../JDBC/Libs/lib/hibernate4" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.ideaLibSources/hibernate-entitymanager-4.3.9.Final-sources.jar!/" />
+        </SOURCES>
         <jarDirectory url="file://$MODULE_DIR$/../../JDBC/Libs/lib/hibernate4" recursive="false" />
       </library>
     </orderEntry>
