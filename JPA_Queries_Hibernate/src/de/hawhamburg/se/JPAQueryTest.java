@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class JPAQueryTest {
@@ -135,7 +137,106 @@ public class JPAQueryTest {
         em2.getTransaction().commit();
     }
 
-    // Finden aller Kunden, die einen bestimmten Kartentyp haben (CardType). Ausgabe von Name und Kartentyp.
+    //done
+    @Test
+    public void testFindbyCardTypeQuery() {
+        insertDataIntoDB();
+        createEntityManagers();
+        em1.getTransaction().begin();
+
+        //query:
+        List list = em1.createNativeQuery(
+                "SELECT cu.surname, ca.cardtype FROM Customer cu, Card ca Where cu.id like ca.holder_id and ca.cardtype LIKE :type")
+                .setParameter("type", "CREDIT")
+                .getResultList();
+
+        assertEquals(list.size(), 2);
+
+
+        //named query:
+        final TypedQuery<Customer> query =
+                em1.createNamedQuery("selectCustomersWithCardType", Customer.class);
+        query.setParameter("ccType", CardType.CREDIT);
+
+        final List<Customer> results = query.getResultList();
+        assertEquals(list.size(), 2);
+
+        em1.getTransaction().commit();
+    }
+
+    //done
+    @Test
+    public void testCustomerAndBankQuery() {
+        insertDataIntoDB();
+        createEntityManagers();
+        em1.getTransaction().begin();
+
+        //query
+        List list = em1.createNativeQuery(
+                "SELECT CUSTOMER.NAME, BANK.NAME AS Bank_Name FROM BANK_CUSTOMER, CUSTOMER, BANK WHERE BANK_CUSTOMER.BANK_ID=BANK.ID AND BANK_CUSTOMER.CUSTOMER_ID= BANK_CUSTOMER.CUSTOMER_ID")
+                .getResultList();
+        assertEquals(list.size(), 2);
+
+        //namedQuery
+        final TypedQuery<Customer> query =
+                em1.createNamedQuery("selectCustomersWithBankNumber", Customer.class);
+
+        final List<Customer> results = query.getResultList();
+        assertEquals(list.size(), 2);
+
+        em1.getTransaction().commit();
+    }
+
+    @Test
+    public void testCustomerCityBanksQuery() {
+        insertDataIntoDB();
+        createEntityManagers();
+        em1.getTransaction().begin();
+        //query
+        List list = em1.createNativeQuery(
+                "SELECT DISTINCT CUSTOMER.NAME, BANK.NAME AS Bank_Name, CITY, STREET FROM BANK_CUSTOMER, CUSTOMER, BANK, ADDRESS WHERE BANK_CUSTOMER.BANK_ID=BANK.ID AND BANK_CUSTOMER.CUSTOMER_ID= BANK_CUSTOMER.CUSTOMER_ID AND ADDRESS.ID IN (SELECT ADDRESS.ID FROM OFFICE_ADDRESS, BANK WHERE OFFICE_ADDRESS.ADDRESS_ID=ADDRESS.ID AND OFFICE_ADDRESS.BANK_ID=BANK.ID) AND CITY = 'Bremen'")
+                .getResultList();
+
+        assertEquals(list.size(), 2);
+
+        //namedQuery
+        final TypedQuery<CustomerWithBankOfficeAddress> query =
+                em1.createNamedQuery("selectCustomerOffices", CustomerWithBankOfficeAddress .class);
+
+        final List<CustomerWithBankOfficeAddress> results = query.getResultList();
+        assertEquals(list.size(), 2);
+
+        em1.getTransaction().commit();
+    }
+
+    //done
+    @Test
+    public void testCustomerAndCardsQuery() {
+        insertDataIntoDB();
+        createEntityManagers();
+        em1.getTransaction().begin();
+
+        //query
+        List list = em1.createNativeQuery(
+                "SELECT Card.CCNUMBER, Card.CARDTYPE FROM CUSTOMER, CARD WHERE CUSTOMER.ID = CARD.HOLDER_ID AND CUSTOMER.NAME = 'Konrad'")
+                .getResultList();
+        assertEquals(list.size(), 3);
+
+        //namedQuery
+        TypedQuery<Card> queryCreditCards = em1.createNamedQuery("selectCustomerWithAllCards", Card.class);
+        queryCreditCards.setParameter("name", Messages.getString("INP5.1"));
+
+        List<Card> result = queryCreditCards.getResultList();
+        assertEquals(result.size(), 3);
+
+        em1.getTransaction().commit();
+    }
+
+    @Test
+    public void testInsert() {
+        insertDataIntoDB();
+    }
+
     @Test
     public void testFindbyCardType() {
         insertDataIntoDB();
@@ -162,75 +263,6 @@ public class JPAQueryTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        em1.getTransaction().commit();
-    }
-
-    @Test
-    public void testFindbyCardTypeQuery() {
-        insertDataIntoDB();
-        createEntityManagers();
-        em1.getTransaction().begin();
-
-        //query:
-        List list = em1.createNativeQuery(
-                "SELECT cu.surname, ca.cardtype FROM Customer cu, Card ca Where cu.id like ca.holder_id and ca.cardtype LIKE :type")
-                .setParameter("type", "CREDIT")
-                .getResultList();
-
-        System.out.println("xx");
-
-        /*
-        //named query:
-        TypedQuery<Customer> query =
-                em1.createNamedQuery("Customer.FindbyCardType", Customer.class);
-        List<Customer> results = query.getResultList();
-        System.out.println("xx");
-        */
-
-        em1.getTransaction().commit();
-    }
-
-
-    @Test
-    public void testCustomerAndBank() {
-        insertDataIntoDB();
-        createEntityManagers();
-        em1.getTransaction().begin();
-        int counterCredit = 0;
-        int counterDebit = 0;
-        try {
-            final List<Customer> customers = selectAllCustomers();
-            for (int i = 0; i < customers.size(); i++) {
-
-                Customer customer = em1.find(Customer.class, customers.get(i).getId());
-                Set<Bank> banks = customer.getBanks();
-
-                for (Bank bank : banks) {
-                    for (Address address : bank.getOffices()) {
-                        LOG.info(customer.getName() + " " + customer.getSurname() + " Bank: " + address.toString());
-                    }
-                    bank.getOffices().forEach(System.err::println);
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        em1.getTransaction().commit();
-    }
-
-    @Test
-    public void testCustomerAndBankQuery() {
-        insertDataIntoDB();
-        createEntityManagers();
-        em1.getTransaction().begin();
-
-        //query
-        List list = em1.createNativeQuery(
-                "SELECT CUSTOMER.NAME, BANK.NAME AS Bank_Name FROM BANK_CUSTOMER, CUSTOMER, BANK WHERE BANK_CUSTOMER.BANK_ID=BANK.ID AND BANK_CUSTOMER.CUSTOMER_ID= BANK_CUSTOMER.CUSTOMER_ID")
-                .getResultList();
-
-        System.out.println("xx");
         em1.getTransaction().commit();
     }
 
@@ -266,16 +298,30 @@ public class JPAQueryTest {
     }
 
     @Test
-    public void testCustomerCityBanksQuery() {
+    public void testCustomerAndBank() {
         insertDataIntoDB();
         createEntityManagers();
         em1.getTransaction().begin();
-        //query
-        List list = em1.createNativeQuery(
-                "SELECT DISTINCT CUSTOMER.NAME, BANK.NAME AS Bank_Name, CITY, STREET FROM BANK_CUSTOMER, CUSTOMER, BANK, ADDRESS WHERE BANK_CUSTOMER.BANK_ID=BANK.ID AND BANK_CUSTOMER.CUSTOMER_ID= BANK_CUSTOMER.CUSTOMER_ID AND ADDRESS.ID IN (SELECT ADDRESS.ID FROM OFFICE_ADDRESS, BANK WHERE OFFICE_ADDRESS.ADDRESS_ID=ADDRESS.ID AND OFFICE_ADDRESS.BANK_ID=BANK.ID) AND CITY = 'Bremen'")
-                .getResultList();
+        int counterCredit = 0;
+        int counterDebit = 0;
+        try {
+            final List<Customer> customers = selectAllCustomers();
+            for (int i = 0; i < customers.size(); i++) {
 
-        System.out.println("xx");
+                Customer customer = em1.find(Customer.class, customers.get(i).getId());
+                Set<Bank> banks = customer.getBanks();
+
+                for (Bank bank : banks) {
+                    for (Address address : bank.getOffices()) {
+                        LOG.info(customer.getName() + " " + customer.getSurname() + " Bank: " + address.toString());
+                    }
+                    bank.getOffices().forEach(System.err::println);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         em1.getTransaction().commit();
     }
 
@@ -305,27 +351,6 @@ public class JPAQueryTest {
         em1.getTransaction().commit();
     }
 
-    @Test
-    public void testCustomerAndCardsQuery() {
-        insertDataIntoDB();
-        createEntityManagers();
-        em1.getTransaction().begin();
-
-        //query
-        List list = em1.createNativeQuery(
-                "SELECT Card.CCNUMBER, Card.CARDTYPE FROM CUSTOMER, CARD WHERE CUSTOMER.ID = CARD.HOLDER_ID AND CUSTOMER.NAME = 'Konrad'")
-                .getResultList();
-
-        System.out.println("xx");
-
-        em1.getTransaction().commit();
-    }
-
-    @Test
-    public void testInsert() {
-        insertDataIntoDB();
-    }
-
     private void insertDataIntoDB() {
         try {
             createEntityManagers();
@@ -341,7 +366,7 @@ public class JPAQueryTest {
             em1.getTransaction().commit();
 
             Bank deutscheBank = new Bank("Deutsche Bank");
-            Address addressDeutscheBank = new Address("22222", "Bremen", "Highway 3000");
+            Address addressDeutscheBank = new Address("11111", "Bremen", "Highway 3000");
             deutscheBank.addOfficeByAddress(addressDeutscheBank);
 
             em1.getTransaction().begin();
@@ -350,7 +375,7 @@ public class JPAQueryTest {
 
 
             Customer konrad = new Customer(Messages.getString("INP5.0"), Messages.getString("INP5.1"));
-            Address addressKonrad = new Address("20099", "Hamburg", "Berliner Tor");
+            Address addressKonrad = new Address("11111", "Hamburg", "Berliner Tor");
             konrad.setHomeAddress(addressKonrad);
 
             CardIssuer visa = new CardIssuer("VISA");

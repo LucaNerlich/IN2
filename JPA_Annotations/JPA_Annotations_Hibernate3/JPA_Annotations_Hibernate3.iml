@@ -54,7 +54,9 @@
           <root url="file://$MODULE_DIR$/../../JDBC/Libs/lib" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.ideaLibSources/junit-4.12-sources.jar!/" />
+        </SOURCES>
         <jarDirectory url="file://$MODULE_DIR$/../../JDBC/Libs/lib" recursive="false" />
       </library>
     </orderEntry>

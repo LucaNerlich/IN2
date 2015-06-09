@@ -5,13 +5,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 //http://stackoverflow.com/questions/18092103/typesafe-named-native-query-in-hibernate
-@NamedNativeQueries({
-        @NamedNativeQuery(name ="Customer.FindbyCardType", query="SELECT cu.surname, ca.cardtype FROM Customer cu, Card ca Where cu.id like ca.holder_id and ca.cardtype LIKE 'CREDIT'"),
-        @NamedNativeQuery(name ="Customer.CustomerAndBank", query="SELECT CUSTOMER.NAME, BANK.NAME AS Bank_Name FROM BANK_CUSTOMER, CUSTOMER, BANK WHERE BANK_CUSTOMER.BANK_ID=BANK.ID AND BANK_CUSTOMER.CUSTOMER_ID= BANK_CUSTOMER.CUSTOMER_ID"),
-        @NamedNativeQuery(name ="Customer.CustomerCityBanks", query="SELECT DISTINCT CUSTOMER.NAME, BANK.NAME AS Bank_Name, CITY, STREET FROM BANK_CUSTOMER, CUSTOMER, BANK, ADDRESS WHERE BANK_CUSTOMER.BANK_ID=BANK.ID AND BANK_CUSTOMER.CUSTOMER_ID= BANK_CUSTOMER.CUSTOMER_ID AND ADDRESS.ID IN (SELECT ADDRESS.ID FROM OFFICE_ADDRESS, BANK WHERE OFFICE_ADDRESS.ADDRESS_ID=ADDRESS.ID AND OFFICE_ADDRESS.BANK_ID=BANK.ID) AND CITY = 'Bremen'"),
-        @NamedNativeQuery(name ="Customer.CustomerAndCards", query="SELECT Card.CCNUMBER, Card.CARDTYPE FROM CUSTOMER, CARD WHERE CUSTOMER.ID=CARD.HOLDER_ID AND CUSTOMER.NAME='Konrad'")
-})
 @Entity
+@NamedQueries({
+        //5.1
+        @NamedQuery(name = "selectCustomersWithCardType",
+                query = "Select c FROM Customer c JOIN c.creditCards cc WHERE cc.type = :ccType ORDER BY c.id"),
+        //5.2
+        @NamedQuery(name = "selectCustomersWithBankNumber",
+                query = "Select c FROM Customer c JOIN c.creditCards cc WHERE cc.holder =  c.id ORDER BY c.id"),
+        //5.3
+        @NamedQuery(name = "selectCustomerOffices",
+                query = "SELECT NEW de.hawhamburg.se.CustomerWithBankOfficeAddress(c.name, o.street)"
+                        + "from Customer c join c.banks b join b.offices o where c.homeAddress.postcode = o.postcode"),
+        //5.4
+        @NamedQuery(name = "selectCustomerWithAllCards",
+                query = "FROM Card where holder.name = :name")
+})
 public class Customer {
 
     private long id;
@@ -26,8 +35,8 @@ public class Customer {
     }
 
     public Customer(final String surname, final String name) {
-        this.name = name;
         this.surname = surname;
+        this.name = name;
         banks = new HashSet<>();
         creditCards = new HashSet<>();
     }
