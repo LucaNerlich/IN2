@@ -13,6 +13,7 @@ import java.util.Set;
         //5.2
         @NamedQuery(name = "selectCustomersWithBankNumber",
                 query = "Select c FROM Customer c JOIN c.creditCards cc WHERE cc.holder =  c.id ORDER BY c.id"),
+        //Select c From Customer c join c.banks ba where ba.name is not null")
         //5.3
         @NamedQuery(name = "selectCustomerOffices",
                 query = "SELECT NEW de.hawhamburg.se.CustomerWithBankOfficeAddress(c.name, o.street)"
