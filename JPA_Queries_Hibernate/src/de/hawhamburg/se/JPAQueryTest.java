@@ -182,8 +182,19 @@ public class JPAQueryTest {
                 em1.createNamedQuery("selectCustomersWithBankNumber", Customer.class);
 
         final List<Customer> results = query.getResultList();
-        assertEquals(list.size(), 2);
-
+        assertEquals(results.size(), 3);
+        String ccNumber = results.get(0).getCreditCards().iterator().next().getNumber();
+        String bankname = results.get(0).getBanks().iterator().next().getName();
+        boolean numberIsEqual = false;
+        boolean nameIsEqual = false;
+        if (ccNumber.equals("5102") || ccNumber.equals("2015") || ccNumber.equals("20152")) {
+            numberIsEqual = true;
+        }
+        if(bankname.equals("HASPA") || bankname.equals("Deutsche Bank")){
+            nameIsEqual = true;
+        }
+        assertTrue(numberIsEqual);
+        assertTrue(nameIsEqual);
         em1.getTransaction().commit();
     }
 
@@ -201,7 +212,7 @@ public class JPAQueryTest {
 
         //namedQuery
         final TypedQuery<CustomerWithBankOfficeAddress> query =
-                em1.createNamedQuery("selectCustomerOffices", CustomerWithBankOfficeAddress .class);
+                em1.createNamedQuery("selectCustomerOffices", CustomerWithBankOfficeAddress.class);
 
         final List<CustomerWithBankOfficeAddress> results = query.getResultList();
         assertEquals(list.size(), 2);
